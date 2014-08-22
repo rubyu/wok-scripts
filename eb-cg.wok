@@ -1,0 +1,38 @@
+
+/** eb-cg.wok
+  * 
+  * Usage: java -jar wok-0.0.0.jar -v source=0 -v target=1 -v index=0 -v@rawstr dic=path_to_epwing -v@rawstr dir=collection.media -f eb-cg.wok < input.tsv > output.tsv
+  *
+  * Option:
+  *   -v source:        the index number of the source field
+  *   -v target:        the index number of the target field
+  *   -v index:         the index number of the target image in the query result
+  *   -v@rawstr dic:    path to a directory containing Epwing's CATALOGS file
+  *   -v@rawstr dir:    path to a directory used as the output destination of image files
+  *
+  * Note: This script has a dependency for a funcion decoding BASE64, exists only in Sun's Java Runtime Environment.
+  */
+
+-b FS('\t') FQ(Quote Min) OFS('\t') OFQ(Quote All)
+-b val eb = "ebquery-0.3.1.jar"
+-b val tag = """<img alt="([0-9A-Z]+)" class="(ebcg|ebmg)" src="data:image/(jpeg|png);base64,([^"]+)">""".r
+-b val b64 = new sun.misc.BASE64Decoder()
+-b val md = java.security.MessageDigest.getInstance("md5")
+-b if (eb nonExistent) eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
+-b if (dir nonExistent) dir.createDirectory()
+-b def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "cg,mg", s).!>.string)
+-b   .zipWithIndex.filter(_._2 == index)
+-b   .map { case (tag(alt, cls, mt, data), i) => 
+-b     val bytes = b64 decodeBuffer data
+-b     md.reset()
+-b     md update bytes
+-b     val hash = md.digest().map("%02X" format _).mkString
+-b     val file = dir / s"$hash.$mt"
+-b     if (file nonExistent) file write bytes
+-b     s"""<img alt="$alt" class="$cls" src="${file.name}">""" }
+-b   .toList.headOption getOrElse ""
+
+.filter (_ isDefinedAt source)
+.map (_.padTo(target+1, ""))
+.map (row => row.updated(target, query(row(source))))
+.foreach (row => println(row: _*))
