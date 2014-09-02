@@ -13,26 +13,39 @@
   * Note: This script has a dependency for a funcion decoding BASE64, exists only in Sun's Java Runtime Environment.
   */
 
--b FS('\t') FQ(Quote Min) OFS('\t') OFQ(Quote All)
--b val eb = "ebquery-0.3.1.jar"
--b val tag = """<img alt="([0-9A-Z]+)" class="(ebcg|ebmg)" src="data:image/(jpeg|png);base64,([^"]+)">""".r
--b val b64 = new sun.misc.BASE64Decoder()
--b val md = java.security.MessageDigest.getInstance("md5")
--b if (eb nonExistent) eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
--b if (dir nonExistent) dir.createDirectory()
--b def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "cg,mg", s).!>.string)
--b   .zipWithIndex.filter(_._2 == index)
--b   .map { case (tag(alt, cls, mt, data), i) => 
--b     val bytes = b64 decodeBuffer data
--b     md.reset()
--b     md update bytes
--b     val hash = md.digest().map("%02X" format _).mkString
--b     val file = dir / s"$hash.$mt"
--b     if (file nonExistent) file write bytes
--b     s"""<img alt="$alt" class="$cls" src="${file.name}">""" }
--b   .toList.headOption getOrElse ""
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
 
-.filter (_ isDefinedAt source)
-.map (_.padTo(target+1, ""))
-.map (row => row.updated(target, query(row(source))))
-.foreach (row => println(row: _*))
+val eb = "ebquery-0.3.1.jar"
+val tag = """<img alt="([0-9A-Z]+)" class="(ebcg|ebmg)" src="data:image/(jpeg|png);base64,([^"]+)">""".r
+val b64 = new sun.misc.BASE64Decoder()
+val md = java.security.MessageDigest.getInstance("md5")
+
+if (eb nonExistent)
+  eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
+
+if (dir nonExistent)
+  dir.createDirectory()
+
+def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "cg,mg", s).!>.string)
+  .zipWithIndex .filter(_._2 == index)
+  .map { case (tag(alt, cls, mt, data), i) =>
+    val bytes = b64 decodeBuffer data
+    md.reset()
+    md update bytes
+    val hash = md.digest().map("%02X" format _).mkString
+    val file = dir / s"$hash.$mt"
+    if (file nonExistent)
+      file write bytes
+    s"""<img alt="$alt" class="$cls" src="${file.name}">"""
+  }
+  .toList.headOption getOrElse ""
+
+In { _ 
+  .filter (_ isDefinedAt source)
+  .map (_.padTo(target+1, ""))
+  .map (row => row.updated(target, query(row(source))))
+  .foreach (row => println(row: _*))
+}

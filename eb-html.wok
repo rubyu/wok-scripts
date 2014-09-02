@@ -10,12 +10,21 @@
   *   -v@rawstr ebmap:  path to a EBWin3/4 map file corresponds to a EPWING dictionary specified by option `dic`
   */
 
--b FS('\t') FQ(Quote Min) OFS('\t') OFQ(Quote All)
--b val eb = "ebquery-0.3.1.jar"
--b if (eb nonExistent) eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
--b def query(s: String) = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "tx,ec,ls", "--ebmap", ebmap, s).!>.string
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
 
-.filter (_ isDefinedAt source)
-.map (_.padTo(target+1, ""))
-.map (row => row.updated(target, query(row(source))))
-.foreach (row => println(row: _*))
+val eb = "ebquery-0.3.1.jar"
+
+if (eb nonExistent) 
+  eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
+
+def query(s: String) = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "tx,ec,ls", "--ebmap", ebmap, s).!>.string
+
+In { _ 
+  .filter (_ isDefinedAt source)
+  .map (_.padTo(target+1, ""))
+  .map (row => row.updated(target, query(row(source))))
+  .foreach (row => println(row: _*))
+}
