@@ -1,0 +1,52 @@
+
+/** eb-html-ec-separately.wok
+  * 
+  * Usage: java -jar wok-0.0.0.jar -v source=0 -v target=1 -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap -v@rawstr dir=collection.media -f eb-html-ec-separately.wok < input.tsv > output.tsv
+  * 
+  * Option:
+  *   -v source:        the index number of the source field
+  *   -v target:        the index number of the target field
+  *   -v@rawstr dic:    path to a directory containing Epwing's CATALOGS file
+  *   -v@rawstr ebmap:  path to a EBWin3/4 map file corresponds to a EPWING dictionary specified by option `dic`
+  *   -v@rawstr dir:    path to a directory used as the output destination of image files
+  *
+  * Note: This script has a dependency for a funcion decoding BASE64, exists only in Sun's Java Runtime Environment.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val eb = "ebquery-0.3.1.jar"
+val tag = """<img alt="([0-9a-zA-Z]+)" class="ebec" src="data:image/png;base64,([^"]+)">""".r
+val b64 = new sun.misc.BASE64Decoder()
+val md = java.security.MessageDigest.getInstance("md5")
+
+if (eb nonExistent) 
+  eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
+
+if (dir nonExistent)
+  dir.createDirectory()
+
+def query(s: String) = {
+  val html = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "tx,ec,ls", "--ebmap", ebmap, s).!>.string
+  tag.replaceAllIn(html, { m =>
+    val (alt, data) = (m.group(1), m.group(2))
+    val bytes = b64 decodeBuffer data
+    md.reset()
+    md update bytes
+    val hash = md.digest().map("%02X" format _).mkString
+    val file = dir / s"$hash.png"
+    if (file nonExistent)
+      file write bytes
+    s"""<img alt="$alt" class="ebec" src="${file.name}">"""
+  })
+}
+
+In { _ 
+  .filter (_ isDefinedAt source)
+  .map (_.padTo(target+1, ""))
+  .map (row => row.updated(target, query(row(source))))
+  .foreach (row => println(row: _*))
+}
