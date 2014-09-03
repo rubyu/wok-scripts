@@ -1,7 +1,9 @@
+#!/usr/bin/wok -f
 
 /** eb-cg.wok
   * 
-  * Usage: java -jar wok-0.0.0.jar -v source=0 -v target=1 -v index=0 -v@rawstr dic=path_to_epwing -v@rawstr dir=collection.media -f eb-cg.wok < input.tsv > output.tsv
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f eb-cg.wok -v source=0 -v target=1 -v index=0 -v@rawstr dic=path_to_epwing -v@rawstr dir=collection.media < input.tsv > output.tsv
   *
   * Option:
   *   -v source:        the index number of the source field

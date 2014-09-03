@@ -1,8 +1,10 @@
+#!/usr/bin/wok -f
 
 /** eb-html.wok
   * 
-  * Usage: java -jar wok-0.0.0.jar -v source=0 -v target=1 -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap -f eb-html.wok < input.tsv > output.tsv
-  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f eb-html.wok -v source=0 -v target=1 -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap < input.tsv > output.tsv
+  *
   * Option:
   *   -v source:        the index number of the source field
   *   -v target:        the index number of the target field

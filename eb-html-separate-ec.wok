@@ -1,7 +1,9 @@
+#!/usr/bin/wok -f
 
-/** eb-html-ec-separately.wok
+/** eb-html-separate-ec.wok
   * 
-  * Usage: java -jar wok-0.0.0.jar -v source=0 -v target=1 -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap -v@rawstr dir=collection.media -f eb-html-ec-separately.wok < input.tsv > output.tsv
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f eb-html-separate-ec.wok -v source=0 -v target=1 -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap -v@rawstr dir=collection.media < input.tsv > output.tsv
   * 
   * Option:
   *   -v source:        the index number of the source field
