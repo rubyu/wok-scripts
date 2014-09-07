@@ -3,12 +3,12 @@
 /** eb-cg.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f eb-cg.wok -v source=0 -v target=1 -v index=0 -v@rawstr dic=path_to_epwing -v@rawstr dir=collection.media < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f eb-cg.wok -v src=0 -v dst=1 -v idx=0 -v@rawstr dic=path_to_epwing -v@rawstr dir=collection.media < input.tsv > output.tsv
   *
   * Option:
-  *   -v source:        the index number of the source field
-  *   -v target:        the index number of the target field
-  *   -v index:         the index number of the target image in the query result
+  *   -v src:           the index number of the source field
+  *   -v dst:           the index number of the destination field
+  *   -v idx:           the index number of the target image in the query result
   *   -v@rawstr dic:    path to a directory containing Epwing's CATALOGS file
   *   -v@rawstr dir:    path to a directory used as the output destination of image files
   *
@@ -32,7 +32,7 @@ if (dir nonExistent)
   dir.createDirectory()
 
 def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "cg,mg", s).!>.string)
-  .zipWithIndex .filter(_._2 == index)
+  .zipWithIndex .filter(_._2 == idx)
   .map { case (tag(alt, cls, mt, data), i) =>
     val bytes = b64 decodeBuffer data
     md.reset()
@@ -46,8 +46,8 @@ def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "
   .toList.headOption getOrElse ""
 
 In { _ 
-  .filter (_ isDefinedAt source)
-  .map (_.padTo(target+1, ""))
-  .map (row => row.updated(target, query(row(source))))
+  .filter (_ isDefinedAt src)
+  .map (_.padTo(dst+1, ""))
+  .map (row => row.updated(dst, query(row(src))))
   .foreach (row => println(row: _*))
 }

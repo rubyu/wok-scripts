@@ -3,11 +3,11 @@
 /** eb-html.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f eb-html.wok -v source=0 -v target=1 -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f eb-html.wok -v src=0 -v dst=1 -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap < input.tsv > output.tsv
   *
   * Option:
-  *   -v source:        the index number of the source field
-  *   -v target:        the index number of the target field
+  *   -v src:           the index number of the source field
+  *   -v dst:           the index number of the destination field
   *   -v@rawstr dic:    path to a directory containing Epwing's CATALOGS file
   *   -v@rawstr ebmap:  path to a EBWin3/4 map file corresponds to a EPWING dictionary specified by option `dic`
   */
@@ -25,8 +25,8 @@ if (eb nonExistent)
 def query(s: String) = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "tx,ec,ls", "--ebmap", ebmap, s).!>.string
 
 In { _ 
-  .filter (_ isDefinedAt source)
-  .map (_.padTo(target+1, ""))
-  .map (row => row.updated(target, query(row(source))))
+  .filter (_ isDefinedAt src)
+  .map (_.padTo(dst+1, ""))
+  .map (row => row.updated(dst, query(row(src))))
   .foreach (row => println(row: _*))
 }
