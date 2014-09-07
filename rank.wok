@@ -1,0 +1,37 @@
+#!/usr/bin/wok -f
+
+/** rank.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f rank.wok -v src=0 -v dst=1 -v grp=1 -v@rawstr ranking=list.txt < input.tsv > output.tsv
+  *
+  * Option:
+  *   -v src:               the index number of the source field
+  *   -v dst:               the index number of the destination field
+  *   -v grp:               the unit size of grouping the rank value; this value must be larger than zero
+  *   -v@rawstr ranking:    path to a ranking file
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val rank = In.from(ranking) { _
+  .zipWithIndex
+  .map { case (row, i) => row(0) -> i }
+  .toMap
+}
+
+In { _
+  .filter (_ isDefinedAt src)
+  .map (_.padTo(dst+1, ""))
+  .map { row =>
+    val k = row(src)
+    rank.get(k) match {
+      case Some(v) => row.updated(dst, s"${v / grp + 1}")
+      case None => row
+    }
+  }
+  .foreach (row => println(row: _*))
+}
