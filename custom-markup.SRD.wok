@@ -1,0 +1,30 @@
+#!/usr/bin/wok -f
+
+/** custom-markup.SRD.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f custom-markup.SRD.wok -v idx=0  < input.tsv > output.tsv
+  *
+  * Option:
+  *   -v idx:  the index number of the target field
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val p1 = """<br>(━((?!<br>).)+)""".r
+val p2 = """<br>(【\d+】((?!<br>).)+)""".r
+val p3 = """<br>(\(\d+\)((?!<br>).)+)""".r
+
+In { _ 
+  .filter (_.size > 0)
+  .map (_.padTo(idx+1, ""))
+  .map { row =>
+    val result = p1.replaceAllIn(p2.replaceAllIn(p3.replaceAllIn(row(idx), """<br><span class="sense2">$1</span>"""), 
+      """<br><span class="sense1">$1</span>"""), """<br><span class="pos">$1</span>""")
+    row.updated(idx, result)
+  }
+  .foreach (row => println(row: _*))
+}
