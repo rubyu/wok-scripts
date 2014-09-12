@@ -15,6 +15,10 @@
   *
   * Option:
   *   -v idx:  the index number of the target field
+  *
+  * Note:
+  *   This script works with or without elements that have `ebul` class. So if you need, you can enable
+  *   module `dc` for query option for ebquery.
   */
 
 FS = '\t'
@@ -23,12 +27,11 @@ OFS = '\t'
 OFQ = Quote.All
 
 val p1 = """r>((<img alt="zB125" class="ebec" src="13F16D3D06DF13EF13B7DD0AD6C047C4.png">|━)((?!<br>).)+)<b""".r	// pos
-val p2 = """r>(A( [^a-zA-Z]((?!<br>).)*)?)<b""".r	// sense1
-val p3 = """r>([B-Z]( ((?!<br>).)*)?)<b""".r		// sense1
-val p4 = """r>(\d+( ((?!<br>).)*)?)<b""".r		// sense2
-val p5 = """r>(a( [^a-z]((?!<br>).)*)?)<b""".r		// sense3
-val p6 = """r>([b-z]( ((?!<br>).)*)?)<b""".r		// sense3
-
+val p2 = """r>((<span class="ebul">)?A(</span>)?( [^a-zA-Z]((?!<br>).)*)?)<b""".r	// sense1
+val p3 = """r>((<span class="ebul">)?[B-Z](</span>)?( ((?!<br>).)*)?)<b""".r		// sense1
+val p4 = """r>((<span class="ebul">)?\d+(</span>)?( ((?!<br>).)*)?)<b""".r		// sense2
+val p5 = """r>((<span class="ebul">)?a(</span>)?( [^a-z]((?!<br>).)*)?)<b""".r		// sense3
+val p6 = """r>((<span class="ebul">)?[b-z](</span>)?( ((?!<br>).)*)?)<b""".r		// sense3
 
 In { _ 
   .filter (_.size > 0)
