@@ -2,8 +2,8 @@
 
 /** custom-markup.SRD.wok
   * 
-  * This script make changes to the search result for a word in Shogakukan Random House English Dictionary converted
-  * to Epwing. The following changes will be applied to the data:
+  * This script makes changes to the search result for a word in Shogakukan Random House English Dictionary (converted
+  * to Epwing by EBStudio). The following changes will be applied to the data:
   *
   * 1. Add pos class to lines start with "━" (e.g, "━n.").
   * 2. Add sense1 class to lines start with "【 NUMBER 】" (e.g, 【1】).
