@@ -22,12 +22,12 @@ FQ = Quote.Min
 OFS = '\t'
 OFQ = Quote.All
 
-val p1 = """<br>((<img alt="zB125" class="ebec" src="13F16D3D06DF13EF13B7DD0AD6C047C4.png">|━)((?!<br>).)+)<br>""".r	// pos
-val p2 = """<br>(A( [^a-zA-Z]((?!<br>).)*)?)<br>""".r	// sense1
-val p3 = """<br>([B-Z]( ((?!<br>).)*)?)<br>""".r	// sense1
-val p4 = """<br>(\d+( ((?!<br>).)*)?)<br>""".r		// sense2
-val p5 = """<br>(a( [^a-z]((?!<br>).)*)?)<br>""".r	// sense3
-val p6 = """<br>([b-z]( ((?!<br>).)*)?)<br>""".r	// sense3
+val p1 = """r>((<img alt="zB125" class="ebec" src="13F16D3D06DF13EF13B7DD0AD6C047C4.png">|━)((?!<br>).)+)<b""".r	// pos
+val p2 = """r>(A( [^a-zA-Z]((?!<br>).)*)?)<b""".r	// sense1
+val p3 = """r>([B-Z]( ((?!<br>).)*)?)<b""".r		// sense1
+val p4 = """r>(\d+( ((?!<br>).)*)?)<b""".r		// sense2
+val p5 = """r>(a( [^a-z]((?!<br>).)*)?)<b""".r		// sense3
+val p6 = """r>([b-z]( ((?!<br>).)*)?)<b""".r		// sense3
 
 
 In { _ 
@@ -35,12 +35,12 @@ In { _
   .map (_.padTo(idx+1, ""))
   .map { row =>
     var str = row(idx)
-    str = p1.replaceAllIn(str, """<br><span class="pos">$1</span><br>""")
-    str = p2.replaceAllIn(str, """<br><span class="sense1">$1</span><br>""")
-    str = p3.replaceAllIn(str, """<br><span class="sense1">$1</span><br>""")
-    str = p4.replaceAllIn(str, """<br><span class="sense2">$1</span><br>""")
-    str = p5.replaceAllIn(str, """<br><span class="sense3">$1</span><br>""")
-    str = p6.replaceAllIn(str, """<br><span class="sense3">$1</span><br>""")
+    str = p1.replaceAllIn(str, """r><span class="pos">$1</span><b""")
+    str = p2.replaceAllIn(str, """r><span class="sense1">$1</span><b""")
+    str = p3.replaceAllIn(str, """r><span class="sense1">$1</span><b""")
+    str = p4.replaceAllIn(str, """r><span class="sense2">$1</span><b""")
+    str = p5.replaceAllIn(str, """r><span class="sense3">$1</span><b""")
+    str = p6.replaceAllIn(str, """r><span class="sense3">$1</span><b""")
     row.updated(idx, str)
   }
   .foreach (row => println(row: _*))
