@@ -6,9 +6,9 @@
   * to Epwing by dessed). The following changes will be applied to the data:
   *
   * 1. Add pos class to lines start with "━ POS" (e.g, "━n.").
-  * 2. Add sense1 class to lines start with upper case character (e.g, A).
-  * 3. Add sense2 class to lines start with digit (e.g, 1).
-  * 4. Add sense3 class to lines start with lower case character (e.g, a).
+  * 2. Add a class `sense1` to lines start with upper case character (e.g, A).
+  * 3. Add a class `sense2` to lines start with digit (e.g, 1).
+  * 4. Add a class `sense3` to lines start with lower case character (e.g, a).
   *
   * Usage:
   *   java -jar wok-0.1.0.jar -f custom-markup.KENE7J5.wok -v idx=0  < input.tsv > output.tsv
@@ -17,7 +17,7 @@
   *   -v idx:  the index number of the target field
   *
   * Note:
-  *   This script works with or without elements that have `ebul` class. So if you need, you can enable
+  *   This script works with or without elements that have a class `ebul`. So if you need, you can enable
   *   module `dc` for query option for ebquery.
   */
 
