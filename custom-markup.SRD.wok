@@ -21,9 +21,9 @@ FQ = Quote.Min
 OFS = '\t'
 OFQ = Quote.All
 
-val p1 = """<br>(━((?!<br>).)+)""".r
-val p2 = """<br>(【\d+】((?!<br>).)+)""".r
-val p3 = """<br>(\(\d+\)((?!<br>).)+)""".r
+val p1 = """<br>(━((?!<br>).)*)""".r
+val p2 = """<br>(【\d+】((?!<br>).)*)""".r
+val p3 = """<br>(\(\d+\)((?!<br>).)*)""".r
 
 In { _ 
   .filter (_.size > 0)
