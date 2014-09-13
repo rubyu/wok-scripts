@@ -5,7 +5,7 @@
   * This script makes changes to the search result for a word in Kenkyusha Shin EiWa Cyujiten (converted
   * to Epwing by dessed). The following changes will be applied to the data:
   *
-  * 1. Add pos class to lines start with "━ POS" (e.g, "━n.").
+  * 1. Add a class `pos` to lines start with "━ POS" (e.g, "━n.").
   * 2. Add a class `sense1` to lines start with upper case character (e.g, A).
   * 3. Add a class `sense2` to lines start with digit (e.g, 1).
   * 4. Add a class `sense3` to lines start with lower case character (e.g, a).

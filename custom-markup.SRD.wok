@@ -5,9 +5,9 @@
   * This script makes changes to the search result for a word in Shogakukan Random House English Dictionary (converted
   * to Epwing by EBStudio). The following changes will be applied to the data:
   *
-  * 1. Add pos class to lines start with "━ POS" (e.g, "━n.").
-  * 2. Add class `sense1` to lines start with "【 NUMBER 】" (e.g, 【1】).
-  * 3. Add class `sense2` to lines start with "( NUMBER )" (e.g, (1)).
+  * 1. Add a class `pos` to lines start with "━ POS" (e.g, "━n.").
+  * 2. Add a class `sense1` to lines start with "【 NUMBER 】" (e.g, 【1】).
+  * 3. Add a class `sense2` to lines start with "( NUMBER )" (e.g, (1)).
   * 
   * Usage:
   *   java -jar wok-0.1.0.jar -f custom-markup.SRD.wok -v idx=0  < input.tsv > output.tsv
