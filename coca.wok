@@ -1,0 +1,46 @@
+#!/usr/bin/wok -f
+
+/** coca.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f coca.wok -v src=0 -v dst=1 -v update=true -v@rawstr dic=coca.tsv < input.tsv > output.tsv
+  *
+  * Option:
+  *   -v src:               the index number of the source field
+  *   -v dst:               the index number of the destination field
+  *   -v@rawstr dic:        path to the COCA list file. This file must be cut the top off; make sure the list starts with the word `the`.
+  *   -v update:            whether or not update all cells in the column specified by `dst`
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+import scala.collection.mutable
+
+case class Entry(rank: Int, pos: String, freq: Int, disp: Float)
+
+val COCA = new mutable.HashMap[String, mutable.Set[Entry]] with mutable.MultiMap[String, Entry]
+
+In.from(dic) { _ foreach { case Seq(rank, lemma, pos, freq, disp) =>
+  COCA.addBinding(lemma, Entry(rank.toInt, pos, freq.toInt, disp.toFloat))
+}}
+
+In { _
+  .filter (_ isDefinedAt src)
+  .map (_.padTo(dst+1, ""))
+  .map { row =>
+    if (update || row(dst).isEmpty) {
+      COCA.get(row(src)) match {
+        case Some(v) =>
+          val xml = <coca>{ v map ( e => <entry><rank>{e.rank}</rank><pos>{e.pos}</pos><freq>{e.freq}</freq><disp>{e.disp}</disp></entry>)}</coca>
+          row.updated(dst, xml)
+        case None => row
+      }
+    } else {
+      row
+    }
+  }
+  .foreach (row => println(row: _*))
+}
