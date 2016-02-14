@@ -3,13 +3,14 @@
 /** eb-html.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f eb-html.wok -v src=0 -v dst=1 -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f eb-html.wok -v src=0 -v dst=1 -v update=true -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap < input.tsv > output.tsv
   *
   * Option:
   *   -v src:           the index number of the source field
   *   -v dst:           the index number of the destination field
   *   -v@rawstr dic:    path to a directory containing Epwing's CATALOGS file
-  *   -v@rawstr ebmap:  path to a EBWin3/4 map file corresponds to a EPWING dictionary specified by option `dic`
+  *   -v@rawstr ebmap:  path to a EBWin3/4 map file corresponding to the EPWING dictionary specified by `dic`
+  *   -v update:        whether or not update all cells in the column specified by `dst`
   */
 
 FS = '\t'
@@ -27,6 +28,6 @@ def query(s: String) = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", di
 In { _ 
   .filter (_ isDefinedAt src)
   .map (_.padTo(dst+1, ""))
-  .map (row => row.updated(dst, query(row(src))))
+  .map (row => if (update || row(dst).isEmpty) row.updated(dst, query(row(src))) else row)
   .foreach (row => println(row: _*))
 }

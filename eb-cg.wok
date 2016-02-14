@@ -3,16 +3,17 @@
 /** eb-cg.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f eb-cg.wok -v src=0 -v dst=1 -v idx=0 -v@rawstr dic=path_to_epwing -v@rawstr dir=collection.media < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f eb-cg.wok -v src=0 -v dst=1 -v idx=0 -v update=true -v@rawstr dic=path_to_epwing -v@rawstr dir=collection.media < input.tsv > output.tsv
   *
   * Option:
   *   -v src:           the index number of the source field
   *   -v dst:           the index number of the destination field
-  *   -v idx:           the index number of the target image in the query result
+  *   -v idx:           the index number of the target image of the query result
   *   -v@rawstr dic:    path to a directory containing Epwing's CATALOGS file
-  *   -v@rawstr dir:    path to a directory used as the output destination of image files
+  *   -v@rawstr dir:    path to a directory to be used as the output destination of image files
+  *   -v update:        whether or not update all cells in the column specified by `dst`
   *
-  * Note: This script has a dependency for a funcion decoding BASE64, exists only in Sun's Java Runtime Environment.
+  * Note: This script has a dependency for a funcion to decode BASE64, only exists in Sun's Java Runtime Environment.
   */
 
 FS = '\t'
@@ -48,6 +49,6 @@ def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "
 In { _ 
   .filter (_ isDefinedAt src)
   .map (_.padTo(dst+1, ""))
-  .map (row => row.updated(dst, query(row(src))))
+  .map (row => if (update || row(dst).isEmpty) row.updated(dst, query(row(src))) else row)
   .foreach (row => println(row: _*))
 }
