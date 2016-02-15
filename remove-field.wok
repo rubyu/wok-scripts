@@ -1,0 +1,23 @@
+#!/usr/bin/wok -f
+
+/** remove-field.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f remove-field.wok -v idx=0 < input.tsv > output.tsv
+  *
+  * Option:
+  *   -v idx    : The index number of the field to be removed. The value must be larger than zero.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+In { _
+  .map { row =>
+    if (idx < row.size) row.take(idx) ++ row.drop(idx+1)
+    else row
+  }
+  .foreach (row => println(row: _*))
+}
