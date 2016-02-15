@@ -23,10 +23,10 @@ import scala.collection.mutable
 
 case class Entry(rank: Int, pos: String, freq: Int, disp: Float)
 
-val COCA = new mutable.HashMap[String, mutable.Set[Entry]] with mutable.MultiMap[String, Entry]
+val COCA = new mutable.HashMap[String, mutable.ListBuffer[Entry]]
 
 In.from(dic) { _ foreach { case Seq(rank, lemma, pos, freq, disp) =>
-  COCA.addBinding(lemma, Entry(rank.toInt, pos, freq.toInt, disp.toFloat))
+  COCA.getOrElseUpdate(lemma, new mutable.ListBuffer[Entry]) += Entry(rank.toInt, pos, freq.toInt, disp.toFloat)
 }}
 
 In { _
