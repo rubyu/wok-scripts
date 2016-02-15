@@ -1,0 +1,26 @@
+#!/usr/bin/wok -f
+
+/** uniq.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f uniq.wok -v idx=0 < input.tsv > output.tsv
+  *
+  * Option:
+  *   -v idx    : The index number of the reference field to eliminate duplicating rows. The value must be larger than zero.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val set = new scala.collection.mutable.HashSet[String]
+
+In { _  
+  .filter (row => row.isDefinedAt(idx) && !set.contains(row(idx)))
+  .map { row =>
+    set.add(row(idx))
+    row
+  }
+  .foreach (row => println(row: _*))
+}
