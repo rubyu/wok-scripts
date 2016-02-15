@@ -6,11 +6,11 @@
   *   java -jar wok-0.1.0.jar -f rank.wok -v src=0 -v dst=1 -v grp=1 -v update=true -v@rawstr ranking=list.txt < input.tsv > output.tsv
   *
   * Option:
-  *   -v src:               the index number of the source field
-  *   -v dst:               the index number of the destination field
-  *   -v grp:               the unit size to group members; this value must be larger than zero.
-  *   -v@rawstr ranking:    path to the ranking file
-  *   -v update:            whether or not update all cells in the column specified by `dst`
+  *   -v src:               The index number of the source field.
+  *   -v dst:               The index number of the destination field.
+  *   -v grp:               The unit size to group members; this value must be larger than zero.
+  *   -v@rawstr ranking:    Path to the ranking file.
+  *   -v update:            Whether or not update all cells in the column specified by `dst`.
   */
 
 FS = '\t'
@@ -28,13 +28,9 @@ In { _
   .filter (_ isDefinedAt src)
   .map (_.padTo(dst+1, ""))
   .map { row =>
-    if (update || row(dst).isEmpty) {
-      rank.get(row(src)) match {
-        case Some(v) => row.updated(dst, s"${v / grp + 1}")
-        case None => row
-      }
-    } else {
-      row
+    rank.get(row(src)) match {
+      case Some(v) if (update || row(dst).isEmpty) => row.updated(dst, s"${v / grp + 1}")
+      case _ => row
     }
   }
   .foreach (row => println(row: _*))
