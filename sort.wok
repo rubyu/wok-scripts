@@ -9,7 +9,7 @@
   *   -v idx:         The index number of the reference column to sort rows. The value must be larger than or equal to zero.
   *   -v@str format:  This value specifies the data type of cells of the column specified by `idx`. 
   *                   `str`, `int` and `float` are available.
-  *   -v@str order:   This value specifies the sorting order. `asc` and `desc` is available.
+  *   -v@str order:   This value specifies the sorting order. `asc` and `desc` are available.
   */
 
 FS = '\t'
