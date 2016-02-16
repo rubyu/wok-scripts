@@ -1,0 +1,39 @@
+#!/usr/bin/wok -f
+
+/** sort.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f sort.wok -v idx=0 -v@str format=str -v@str order=asc input > output
+  *
+  * Option:
+  *   -v idx:         The index number of the reference column to sort rows. The value must be larger than or equal to zero.
+  *   -v@str format:  This value specifies the data type of cells of the column specified by `idx`. 
+  *                   `str`, `int` and `float` are available.
+  *   -v@str order:   This value specifies the sorting order. `asc` and `desc` is available.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val asc = order.toLowerCase match {
+  case "a"| "asc" => true
+  case "d"| "desc" => false
+}
+
+val sorter = format.toLowerCase match {
+  case "s" | "str" | "string" => 
+    if (asc) (a: List[String], b: List[String]) => a(idx).toLowerCase < b(idx).toLowerCase
+    else     (a: List[String], b: List[String]) => a(idx).toLowerCase > b(idx).toLowerCase
+  case "i" | "int" | "long" =>
+    if (asc) (a: List[String], b: List[String]) => a(idx).toLong < b(idx).toLong
+    else     (a: List[String], b: List[String]) => a(idx).toLong > b(idx).toLong
+  case "f" | "float" | "double" => 
+    if (asc) (a: List[String], b: List[String]) => a(idx).toDouble < b(idx).toDouble
+    else     (a: List[String], b: List[String]) => a(idx).toDouble > b(idx).toDouble
+}
+
+In { _.toList }
+  .sortWith(sorter)
+  .foreach (row => println(row: _*))
