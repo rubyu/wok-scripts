@@ -1,12 +1,12 @@
 #!/usr/bin/wok -f
 
-/** remove-field.wok
+/** col-delete.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f remove-field.wok -v idx=0 < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f col-delete.wok -v idx=0 input > output
   *
   * Option:
-  *   -v idx    : The index number of the field to be removed. The value must be larger than zero.
+  *   -v idx:  The index number of the column to be removed. The value must be larger than or equal to zero.
   */
 
 FS = '\t'
@@ -15,6 +15,7 @@ OFS = '\t'
 OFQ = Quote.All
 
 In { _
+  .map (_.padTo(idx+1, ""))
   .map { row =>
     if (idx < row.size) row.take(idx) ++ row.drop(idx+1)
     else row

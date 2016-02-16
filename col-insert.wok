@@ -1,0 +1,25 @@
+#!/usr/bin/wok -f
+
+/** col-insert.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f col-insert.wok -v idx=0 -v@str data=foo input > output
+  *
+  * Option:
+  *   -v idx:       The index number of the column to be newly created. The value must be larger than or equal to zero.
+  *   -v@str data:  The data to be used for the value of cells will be created.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+In { _
+  .map (_.padTo(idx+1, ""))
+  .map { row =>
+    if (idx < row.size) (row.take(idx) :+ data) ++ row.drop(idx)
+    else row
+  }
+  .foreach (row => println(row: _*))
+}
