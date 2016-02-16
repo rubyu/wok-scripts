@@ -3,7 +3,7 @@
 /** eb-html.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f eb-html.wok -v src=0 -v dst=1 -v update=true -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f eb-html.wok -v src=0 -v dst=1 -v update=true -v@rawstr dic=path_to_epwing -v@rawstr ebmap=path_to_ebmap input > output
   *
   * Option:
   *   -v src:           The index number of the source field.

@@ -3,7 +3,7 @@
 /** uniq.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f uniq.wok -v idx=0 < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f uniq.wok -v idx=0 input > output
   *
   * Option:
   *   -v idx:     The index number of the reference field to eliminate duplicating rows. The value must be larger than or equal to zero.

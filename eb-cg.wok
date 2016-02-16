@@ -3,7 +3,7 @@
 /** eb-cg.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f eb-cg.wok -v src=0 -v dst=1 -v idx=0 -v update=true -v@rawstr dic=path_to_epwing -v@rawstr dir=collection.media < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f eb-cg.wok -v src=0 -v dst=1 -v idx=0 -v update=true -v@rawstr dic=path_to_epwing -v@rawstr dir=path_to_media input > output
   *
   * Option:
   *   -v src:         The index number of the source field.

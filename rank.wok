@@ -3,7 +3,7 @@
 /** rank.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f rank.wok -v src=0 -v dst=1 -v grp=1 -v update=true -v@rawstr ranking=list.txt < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f rank.wok -v src=0 -v dst=1 -v grp=1 -v update=true -v@rawstr ranking=path_to_list input > output
   *
   * Option:
   *   -v src:             The index number of the source field.
