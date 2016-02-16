@@ -6,12 +6,12 @@
   *   java -jar wok-0.1.0.jar -f eb-voice.wok -v src=0 -v dst=1 -v idx=0 -v update=true -v@rawstr dic=path_to_epwing -v@rawstr dir=collection.media < input.tsv > output.tsv
   *
   * Option:
-  *   -v src:           The index number of the source field.
-  *   -v dst:           The index number of the destination field.
-  *   -v idx:           The index number of the target voice of the query result.
-  *   -v@rawstr dic:    Path to a directory containing Epwing's CATALOGS file.
-  *   -v@rawstr dir:    Path to a directory to be used as the output destination of voice files.
-  *   -v update:        Whether or not update all cells in the column specified by `dst`.
+  *   -v src:         The index number of the source field.
+  *   -v dst:         The index number of the destination field.
+  *   -v idx:         The index number of the target voice of the query result.
+  *   -v@rawstr dic:  Path to a directory containing Epwing's CATALOGS file.
+  *   -v@rawstr dir:  Path to a directory to be used as the output destination of voice files.
+  *   -v update:      Whether or not update all cells in the column specified by `dst`.
   *
   * Note: This script has a dependency for a funcion to decode BASE64, only exists in Sun's Java Runtime Environment.
   */

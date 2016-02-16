@@ -6,12 +6,12 @@
   *   java -jar wok-0.1.0.jar -f coca.wok -v src=0 -v dst=1 -v update=true -v@rawstr dic=coca.tsv < input.tsv > output.tsv
   *
   * Option:
-  *   -v src:               The index number of the source field.
-  *   -v dst:               The index number of the destination field.
-  *   -v@rawstr dic:        Path to the COCA list file. This file must be cut the top off and make sure the list starts 
-  *                         with the line of `the`, and then remove some accent marks in words `saute(v, n)` and 
-  *                         `cliche(n)` from the list.
-  *   -v update:            Whether or not update all cells in the column specified by `dst`.
+  *   -v src:         The index number of the source field.
+  *   -v dst:         The index number of the destination field.
+  *   -v@rawstr dic:  Path to the COCA list file. This file must be cut the top off and make sure the list starts 
+  *                   with the line of `the`, and then remove some accent marks in words `saute(v, n)` and 
+  *                   `cliche(n)` from the list.
+  *   -v update:      Whether or not update all cells in the column specified by `dst`.
   */
 
 FS = '\t'
