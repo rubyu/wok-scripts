@@ -3,10 +3,11 @@
 /** uniq.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f uniq.wok -v idx=0 input > output
+  *   java -jar wok-0.1.0.jar -f uniq.wok -v idx=0 -v ignore=true input > output
   *
   * Option:
-  *   -v idx:  The index number of the reference column to eliminate duplicating rows. The value must be larger than or equal to zero.
+  *   -v idx:     The index number of the reference column to eliminate duplicating rows. The value must be larger than or equal to zero.
+  *   -v ignore:  Whether ignore the case or not.
   */
 
 FS = '\t'
@@ -16,10 +17,12 @@ OFQ = Quote.All
 
 val set = new scala.collection.mutable.HashSet[String]
 
+def toKey(s: String) = if (ignore) s.toLowerCase else s
+
 In { _  
-  .filter (row => row.isDefinedAt(idx) && !set.contains(row(idx)))
+  .filter (row => row.isDefinedAt(idx) && !set.contains(toKey(row(idx))))
   .map { row =>
-    set.add(row(idx))
+    set.add(toKey(row(idx)))
     row
   }
   .foreach (row => println(row: _*))
