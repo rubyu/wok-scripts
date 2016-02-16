@@ -1,0 +1,20 @@
+#!/usr/bin/wok -f
+
+/** row-drop.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f row-drop.wok -v n=100 input > output
+  *
+  * Option:
+  *   -v n      : The number of first row(s) to be removed. The value must be larger than or equal to zero.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+In { _
+  .filter (_ => n <= NR)
+  .foreach (row => println(row: _*))
+}
