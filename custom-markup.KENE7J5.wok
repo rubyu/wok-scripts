@@ -11,14 +11,14 @@
   * 4. Add a class `sense3` to lines start with lower case character (e.g, a).
   *
   * Usage:
-  *   java -jar wok-0.1.0.jar -f custom-markup.KENE7J5.wok -v idx=0  < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f custom-markup.KENE7J5.wok -v idx=0 input > output
   *
   * Option:
-  *   -v idx:  the index number of the target field
+  *   -v idx:  The index number of the target column.
   *
   * Note:
   *   This script works with or without elements that have a class `ebul`. So if you need, you can enable
-  *   module `dc` for query option for ebquery.
+  *   a query option `dc` for ebquery.
   */
 
 FS = '\t'

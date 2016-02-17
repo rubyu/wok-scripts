@@ -10,10 +10,10 @@
   * 3. Add a class `sense2` to lines start with "( NUMBER )" (e.g, (1)).
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f custom-markup.SRD.wok -v idx=0  < input.tsv > output.tsv
+  *   java -jar wok-0.1.0.jar -f custom-markup.SRD.wok -v idx=0 input > output
   *
   * Option:
-  *   -v idx:  the index number of the target field
+  *   -v idx:  The index number of the target column.
   */
 
 FS = '\t'

@@ -6,7 +6,7 @@
   *   java -jar wok-0.1.0.jar -f uniq.wok -v idx=0 -v ignore=true input > output
   *
   * Option:
-  *   -v idx:     The index number of the reference column to eliminate duplicating rows. The value must be larger than or equal to zero.
+  *   -v idx:     The index number of the reference column to eliminate duplicating rows. This value must be larger than or equal to zero.
   *   -v ignore:  Whether ignore the case or not.
   */
 

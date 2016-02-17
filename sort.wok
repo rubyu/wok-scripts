@@ -6,10 +6,10 @@
   *   java -jar wok-0.1.0.jar -f sort.wok -v idx=0 -v@str format=str -v@str order=asc input > output
   *
   * Option:
-  *   -v idx:         The index number of the reference column to sort rows. The value must be larger than or equal to zero.
+  *   -v idx:         The index number of the reference column to sort rows. This value must be larger than or equal to zero.
   *   -v@str format:  This value specifies the data type of cells of the column specified by `idx`. 
-  *                   `str`, `int` and `float` are available.
-  *   -v@str order:   This value specifies the sorting order. `asc` and `desc` are available.
+  *                   Possible options are `str`, `int` and `float`.
+  *   -v@str order:   This value specifies the sorting order of the result. Possible options are `asc` and `desc`.
   */
 
 FS = '\t'
