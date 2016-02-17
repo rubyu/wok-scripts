@@ -3,12 +3,10 @@
 /** col-fill.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f col-fill.wok -v idx=0 -v@str data=foo -v update=true input > output
+  *   java -jar wok-0.1.0.jar -f col-fill.wok -v idx=0 input > output
   *
   * Option:
-  *   -v idx:       The index number of the column to be filled. The value must be larger than or equal to zero.
-  *   -v@str data:  The data to be used for the value of cells will be updated.
-  *   -v update:    Whether or not update all cells in the column specified by `dst`.
+  *   -v idx:        The index number of the column to be filled. This value must be larger than or equal to zero.
   */
 
 FS = '\t'
@@ -18,9 +16,5 @@ OFQ = Quote.All
 
 In { _
   .map (_.padTo(idx+1, ""))
-  .map { row =>
-    if (idx < row.size && update || row(idx).isEmpty) (row.take(idx) :+ data) ++ row.drop(idx+1)
-    else row
-  }
   .foreach (row => println(row: _*))
 }
