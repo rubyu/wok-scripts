@@ -1,0 +1,11 @@
+#!/usr/bin/wok -f
+
+/** hello.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f hello.wok
+  */
+
+OFQ = Quote.None
+
+print("Hello!")
