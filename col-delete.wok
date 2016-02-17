@@ -15,7 +15,6 @@ OFS = '\t'
 OFQ = Quote.All
 
 In { _
-  .map (_.padTo(idx+1, ""))
   .map { row =>
     if (idx < row.size) row.take(idx) ++ row.drop(idx+1)
     else row
