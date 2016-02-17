@@ -1,0 +1,20 @@
+#!/usr/bin/wok -f
+
+/** row-count.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f row-count.wok input
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.None
+
+var n = 0
+
+In { _
+  .foreach (_ => n += 1)
+}
+
+print(n)
