@@ -3,14 +3,14 @@
 /** rank.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f rank.wok -v src=0 -v dst=1 -v grp=1 -v update=true -v@rawstr ranking=path_to_list input > output
+  *   java -jar wok-0.1.0.jar -f rank.wok -v src=0 -v dst=1 -v grp=1 -v update=true -v@rawstr list=path_to_ranking_file input > output
   *
   * Option:
-  *   -v src:             The index number of the source field.
-  *   -v dst:             The index number of the destination field.
-  *   -v grp:             The unit size to group members; this value must be larger than zero.
-  *   -v@rawstr ranking:  Path to the ranking file.
-  *   -v update:          Whether or not update all cells in the column specified by `dst`.
+  *   -v src:          The index number of the source field.
+  *   -v dst:          The index number of the destination field.
+  *   -v grp:          The unit size to group members. This value must be larger than zero.
+  *   -v@rawstr list:  Path to a ranking file. The first column is used as the ranking criteria.
+  *   -v update:       Whether or not update all cells in the column specified by `dst`.
   */
 
 FS = '\t'
@@ -18,7 +18,7 @@ FQ = Quote.Min
 OFS = '\t'
 OFQ = Quote.All
 
-val rank = In.from(ranking) { _
+val rank = In.from(list) { _
   .zipWithIndex
   .map { case (row, i) => row(0) -> i }
   .toMap

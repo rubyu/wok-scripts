@@ -3,15 +3,15 @@
 /** eb-voice.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f eb-voice.wok -v src=0 -v dst=1 -v idx=0 -v update=true -v@rawstr dic=path_to_epwing -v@rawstr dir=path_to_media input > output
+  *   java -jar wok-0.1.0.jar -f eb-voice.wok -v src=0 -v dst=1 -v idx=0 -v update=true -v@rawstr dic=path_to_epwing_dir -v@rawstr media=path_to_media_dir input > output
   *
   * Option:
-  *   -v src:         The index number of the source field.
-  *   -v dst:         The index number of the destination field.
-  *   -v idx:         The index number of the target voice of the query result.
-  *   -v@rawstr dic:  Path to a directory containing Epwing's CATALOGS file.
-  *   -v@rawstr dir:  Path to a directory to be used as the output destination of voice files.
-  *   -v update:      Whether or not update all cells in the column specified by `dst`.
+  *   -v src:           The index number of the source field.
+  *   -v dst:           The index number of the destination field.
+  *   -v idx:           The index number of the target voice of the query result.
+  *   -v@rawstr dic:    Path to a directory containing Epwing's CATALOGS file.
+  *   -v@rawstr media:  Path to a directory to be used as the output destination of voice files.
+  *   -v update:        Whether or not update all cells in the column specified by `dst`.
   *
   * Note: This script has a dependency for a funcion to decode BASE64, only exists in Sun's Java Runtime Environment.
   */
@@ -29,8 +29,8 @@ val md = java.security.MessageDigest.getInstance("md5")
 if (eb nonExistent)
   eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
 
-if (dir nonExistent)
-  dir.createDirectory()
+if (media nonExistent)
+  media.createDirectory()
 
 def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "sd", s).!>.string)
   .zipWithIndex .filter(_._2 == idx)
@@ -39,7 +39,7 @@ def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "
     md.reset()
     md update bytes
     val hash = md.digest().map("%02X" format _).mkString
-    val file = dir / s"$hash.wav"
+    val file = media / s"$hash.wav"
     if (file nonExistent)
       file write bytes
     s"""[sound:${file.name}]"""
