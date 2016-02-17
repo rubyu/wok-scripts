@@ -3,11 +3,10 @@
 /** col-insert.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f col-insert.wok -v idx=0 -v@str data=foo input > output
+  *   java -jar wok-0.1.0.jar -f col-insert.wok -v idx=0 input > output
   *
   * Option:
-  *   -v idx:       The index number of the column to be newly created. The value must be larger than or equal to zero.
-  *   -v@str data:  The data to be used for the value of cells will be created.
+  *   -v idx:  The index number of the column to be newly created. This value must be larger than or equal to zero.
   */
 
 FS = '\t'
@@ -16,9 +15,9 @@ OFS = '\t'
 OFQ = Quote.All
 
 In { _
-  .map (_.padTo(idx+1, ""))
+  .map (_.padTo(idx, ""))
   .map { row =>
-    if (idx < row.size) (row.take(idx) :+ data) ++ row.drop(idx)
+    if (idx <= row.size) (row.take(idx) :+ "") ++ row.drop(idx)
     else row
   }
   .foreach (row => println(row: _*))
