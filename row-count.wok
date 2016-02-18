@@ -8,7 +8,6 @@
 
 FS = '\t'
 FQ = Quote.Min
-OFQ = Quote.None
 
 var n = 0
 
