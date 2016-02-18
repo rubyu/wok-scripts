@@ -1,14 +1,14 @@
 #!/usr/bin/wok -f
 
-/** col-fill.wok
+/** col-fill-with.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f col-fill.wok -v idx=0 -v@str value=foo -v update=true input > output
+  *   java -jar wok-0.1.0.jar -f col-fill-with.wok -v idx=0 -v@str value=foo -v update=true input > output
   *
   * Option:
   *   -v idx:        The index number of the column to be filled. This value must be larger than or equal to zero.
-  *   -v@str value:  The value of cells updated.
-  *   -v update:     Whether or not update all cells in the column specified by `dst`.
+  *   -v@str value:  The value given to cells to be updated.
+  *   -v update:     Whether or not update all cells of the column specified by `dst`.
   */
 
 FS = '\t'

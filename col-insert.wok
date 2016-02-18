@@ -6,7 +6,7 @@
   *   java -jar wok-0.1.0.jar -f col-insert.wok -v idx=0 input > output
   *
   * Option:
-  *   -v idx:  The index number of the column newly created. This value must be larger than or equal to zero.
+  *   -v idx:  The index number of the column to be created. This value must be larger than or equal to zero.
   */
 
 FS = '\t'

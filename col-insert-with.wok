@@ -1,13 +1,13 @@
 #!/usr/bin/wok -f
 
-/** col-insert.wok
+/** col-insert-with.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f col-insert.wok -v idx=0 -v@str value=foo input > output
+  *   java -jar wok-0.1.0.jar -f col-insert-with.wok -v idx=0 -v@str value=foo input > output
   *
   * Option:
-  *   -v idx:        The index number of the column newly created. This value must be larger than or equal to zero.
-  *   -v@str value:  The initial value of cells newly created.
+  *   -v idx:        The index number of the column to be created. This value must be larger than or equal to zero.
+  *   -v@str value:  The initial value of cells of the column to be created.
   */
 
 FS = '\t'

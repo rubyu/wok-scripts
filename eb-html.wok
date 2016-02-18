@@ -6,11 +6,11 @@
   *   java -jar wok-0.1.0.jar -f eb-html.wok -v src=0 -v dst=1 -v update=true -v@rawstr dic=path_to_epwing_dir -v@rawstr ebmap=path_to_ebmap_file input > output
   *
   * Option:
-  *   -v src:           The index number of the source field.
-  *   -v dst:           The index number of the destination field.
+  *   -v src:           The index number of the source column.
+  *   -v dst:           The index number of the destination column.
   *   -v@rawstr dic:    Path to a directory containing Epwing's CATALOGS file.
   *   -v@rawstr ebmap:  Path to a EBWin3/4 map file corresponding to the EPWING dictionary specified by `dic`.
-  *   -v update:        Whether or not update all cells in the column specified by `dst`.
+  *   -v update:        Whether or not update all cells of the column specified by `dst`.
   */
 
 FS = '\t'

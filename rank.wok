@@ -6,11 +6,11 @@
   *   java -jar wok-0.1.0.jar -f rank.wok -v src=0 -v dst=1 -v grp=1 -v update=true -v@rawstr list=path_to_ranking_file input > output
   *
   * Option:
-  *   -v src:          The index number of the source field.
-  *   -v dst:          The index number of the destination field.
+  *   -v src:          The index number of the source column.
+  *   -v dst:          The index number of the destination column.
   *   -v grp:          The unit size to group members. This value must be larger than zero.
   *   -v@rawstr list:  Path to a ranking file. The first column is used as the ranking criteria.
-  *   -v update:       Whether or not update all cells in the column specified by `dst`.
+  *   -v update:       Whether or not update all cells of the column specified by `dst`.
   */
 
 FS = '\t'
