@@ -1,0 +1,37 @@
+#!/usr/bin/wok -f
+
+/** convert.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f convert.wok -v@rawstr expr=v.size input > output
+  *
+  * Option:
+  *   -v@rawstr expr:  The scala code to be applied to all of the cells. `v` is the value of a cell and the type is `String`.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+import scala.reflect.runtime.currentMirror
+import scala.tools.reflect.ToolBox
+
+def source = s"""
+new Function1[String, Any] {
+  def apply(v: String): Any = {
+    ${expr}
+  }
+}
+"""
+
+val evaluator = {
+  val toolbox = currentMirror.mkToolBox()
+  val tree = toolbox.parse(source)
+  toolbox.eval(tree).asInstanceOf[Function1[String, Any]]
+}
+
+In { _
+  .map (_ map (evaluator apply _))
+  .foreach (row => println(row: _*))
+}
