@@ -1,0 +1,16 @@
+#!/usr/bin/wok -f
+
+/** cat.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f cat.wok input
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+In { _
+  .foreach (row => println(row: _*))
+}
