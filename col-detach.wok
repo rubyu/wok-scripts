@@ -1,0 +1,65 @@
+#!/usr/bin/wok -f
+
+/** col-detach.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f col-detach.wok -v@str src=1,2,3 -v dst=1 -v@rawstr media=path_to_media_dir input > output
+  *
+  * Option:
+  *   -v@str src:       The index number of the source column(s).
+  *   -v dst:           The index number of the destination column.
+  *   -v@rawstr media:  Path to a directory to be used as the output destination of image files.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val srcs = src
+  .split(",")
+  .map(_.toInt)
+  .toList
+
+val md = java.security.MessageDigest.getInstance("md5")
+
+val html_head = 
+"""<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="col-detach.css">
+<script type="text/javascript" src="col-detach.js"></script>
+</head>
+<body>
+"""
+
+val html_tail = 
+"""
+</body>
+</html>
+"""
+
+In { _ 
+  .map { row =>
+    // asasure that row have just the size
+    val padding = math.max(dst, srcs.max) + srcs.count(_ <= dst) + 1
+    row.padTo(padding, "")
+  }
+  .map { row =>
+    val body = srcs.zipWithIndex
+      .map { case (x, i) => f"""<div class="detached-${i}%02d">${row(x)}</div>""" }
+      .mkString
+    val bytes = (html_head + body + html_tail).getBytes("utf-8")
+    md.reset()
+    md update bytes
+    val hash = md.digest().map("%02X" format _).mkString
+    val file = media / s"$hash.html"
+    if (file nonExistent)
+      file write bytes
+    val buffer = row.toBuffer
+    srcs.sorted.reverse foreach (buffer remove _)
+    buffer(dst) = s"""<iframe src="${file.name}"></iframe>"""
+    buffer.toList
+  }
+  .foreach (row => println(row: _*))
+}
