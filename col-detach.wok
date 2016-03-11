@@ -6,9 +6,10 @@
   *   java -jar wok-0.1.0.jar -f col-detach.wok -v@str src=1,2,3 -v dst=1 -v@rawstr media=path_to_media_dir input > output
   *
   * Option:
-  *   -v@str src:       The index number of the source column(s).
+  *   -v@str src:       The index number of the source column. When it is separated by commas and do not contain space, 
+  *                     this can contain mutiple values.
   *   -v dst:           The index number of the destination column.
-  *   -v@rawstr media:  Path to a directory to be used as the output destination of image files.
+  *   -v@rawstr media:  Path to a directory to be used as the output destination of HTML files.
   */
 
 FS = '\t'

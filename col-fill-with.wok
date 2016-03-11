@@ -8,7 +8,7 @@
   * Option:
   *   -v idx:        The index number of the column to be filled. This value must be larger than or equal to zero.
   *   -v@str value:  The value given to cells to be updated.
-  *   -v update:     Whether or not update all cells of the column specified by `dst`.
+  *   -v update:     Whether or not update all cells of the column specified by `idx`.
   */
 
 FS = '\t'
