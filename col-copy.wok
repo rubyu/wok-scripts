@@ -1,0 +1,24 @@
+#!/usr/bin/wok -f
+
+/** col-copy.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f col-copy.wok -v src=0 -v dst=1 input > output
+  *
+  * Option:
+  *   -v src:  The index number of the source column.
+  *   -v dst:  The index number of the destination column.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+In { _
+  .map (_.padTo(math.max(src, dst)+1, ""))
+  .map { row =>
+    (row.take(dst) :+ row(src)) ++ row.drop(dst+1)
+  }
+  .foreach (row => println(row: _*))
+}
