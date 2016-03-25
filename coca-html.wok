@@ -1,9 +1,9 @@
 #!/usr/bin/wok -f
 
-/** coca.wok
+/** coca-html.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f coca.wok -v src=0 -v dst=1 -v update=true -v@rawstr corpus=path_to_coca input > output
+  *   java -jar wok-0.1.0.jar -f coca-html.wok -v src=0 -v dst=1 -v update=true -v@rawstr corpus=path_to_coca input > output
   *
   * Option:
   *   -v src:            The index number of the source column.
@@ -21,7 +21,9 @@ OFQ = Quote.All
 
 import scala.collection.mutable
 
-case class Entry(rank: Int, pos: String, freq: Int, disp: Float)
+case class Entry(rank: Int, pos: String, freq: Int, disp: Float) {
+  def toXml = <tbody><tr><td class="rank">{rank}</td><td class="pos">{pos}</td><td class="freq">{freq}</td><td class="disp">{"%.2f" format disp}</td></tr></tbody>
+}
 
 val COCA = new mutable.HashMap[String, mutable.ListBuffer[Entry]]
 
@@ -37,8 +39,8 @@ In { _
   .map { row =>
     COCA.get(row(src)) match {
       case Some(v) if (update || row(dst).isEmpty) =>
-        val xml = <coca>{ v map (e => <entry><rank>{e.rank}</rank><pos>{e.pos}</pos><freq>{e.freq}</freq><disp>{"%.2f" format e.disp}</disp></entry>) }</coca>
-        row.updated(dst, xml)
+        val xml = <table class="COCA"><thead><tr><th>rank</th><th>PoS</th><th>freq</th><th>disperasion</th></tr></thead>{ v map { _.toXml }}</table>
+      row.updated(dst, xml)
       case _ => row
     }
   }

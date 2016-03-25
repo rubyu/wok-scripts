@@ -1,0 +1,46 @@
+#!/usr/bin/wok -f
+
+/** coca-xml.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f coca-xml.wok -v src=0 -v dst=1 -v update=true -v@rawstr corpus=path_to_coca input > output
+  *
+  * Option:
+  *   -v src:            The index number of the source column.
+  *   -v dst:            The index number of the destination column.
+  *   -v@rawstr corpus:  Path to the COCA list file. This file must be cut the top off and make sure the list starts 
+  *                      with the line of `the`, and then remove some accent marks in words `saute(v, n)` and 
+  *                      `cliche(n)` from the list.
+  *   -v update:         Whether or not update all cells of the column specified by `dst`.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+import scala.collection.mutable
+
+case class Entry(rank: Int, pos: String, freq: Int, disp: Float)
+
+val COCA = new mutable.HashMap[String, mutable.ListBuffer[Entry]]
+
+In.from(corpus) { _ 
+  .foreach { case Seq(rank, lemma, pos, freq, disp) =>
+    COCA.getOrElseUpdate(lemma, new mutable.ListBuffer[Entry]) += Entry(rank.toInt, pos, freq.toInt, disp.toFloat)
+  }
+}
+
+In { _
+  .filter (_ isDefinedAt src)
+  .map (_.padTo(dst+1, ""))
+  .map { row =>
+    COCA.get(row(src)) match {
+      case Some(v) if (update || row(dst).isEmpty) =>
+        val xml = <coca>{ v map (e => <entry><rank>{e.rank}</rank><pos>{e.pos}</pos><freq>{e.freq}</freq><disp>{"%.2f" format e.disp}</disp></entry>) }</coca>
+        row.updated(dst, xml)
+      case _ => row
+    }
+  }
+  .foreach (row => println(row: _*))
+}

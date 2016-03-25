@@ -27,6 +27,7 @@ val md = java.security.MessageDigest.getInstance("md5")
 val html_head = 
 """<html>
 <head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="col-detach.css">
 <script type="text/javascript" src="col-detach.js"></script>
@@ -48,7 +49,7 @@ In { _
   }
   .map { row =>
     val body = srcs.zipWithIndex
-      .map { case (x, i) => f"""<div class="detached-${i}%02d">${row(x)}</div>""" }
+      .map { case (x, i) => f"""<div id="detached-${i}%02d">${row(x)}</div>""" }
       .mkString
     val bytes = (html_head + body + html_tail).getBytes("utf-8")
     md.reset()
