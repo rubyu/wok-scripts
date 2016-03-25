@@ -1,0 +1,55 @@
+#!/usr/bin/wok -f
+
+/** eb-html-min.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f eb-html-min.wok -v src=0 -v dst=1 -v update=true -v@rawstr dic=path_to_epwing_dir -v@rawstr ebmap=path_to_ebmap_file -v@rawstr dir=path_to_media_dir input > output
+  * 
+  * Option:
+  *   -v src:           The index number of the source column.
+  *   -v dst:           The index number of the destination column.
+  *   -v@rawstr dic:    Path to a directory containing Epwing's CATALOGS file.
+  *   -v@rawstr ebmap:  Path to a EBWin3/4 map file corresponding to the EPWING dictionary specified by `dic`.
+  *   -v@rawstr media:  Path to a directory to be used as the output destination of image files.
+  *   -v update:        Whether or not update all cells of the column specified by `dst`.
+  *
+  * Note: This script has a dependency for a funcion to decode BASE64, only exists in Sun's Java Runtime Environment.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val eb = "ebquery-0.3.1.jar"
+val tag = """<img alt="([0-9a-zA-Z]+)" class="ebec" src="data:image/png;base64,([^"]+)">""".r
+val b64 = new sun.misc.BASE64Decoder()
+val md = java.security.MessageDigest.getInstance("md5")
+
+if (eb nonExistent) 
+  eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
+
+if (media nonExistent)
+  media.createDirectory()
+
+def query(s: String) = {
+  val html = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "en,em,dc,tx,sb,sp,ec,ls", "--ebmap", ebmap, s).!>.string
+  tag.replaceAllIn(html, { m =>
+    val (alt, data) = (m.group(1), m.group(2))
+    val bytes = b64 decodeBuffer data
+    md.reset()
+    md update bytes
+    val hash = md.digest().map("%02X" format _).mkString
+    val file = media / s"$hash.png"
+    if (file nonExistent)
+      file write bytes
+    s"""<img alt="$alt" class="ebec" src="${file.name}">"""
+  })
+}
+
+In { _ 
+  .filter (_ isDefinedAt src)
+  .map (_.padTo(dst+1, ""))
+  .map (row => if (update || row(dst).isEmpty) row.updated(dst, query(row(src))) else row)
+  .foreach (row => println(row: _*))
+}
