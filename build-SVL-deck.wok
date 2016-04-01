@@ -1,0 +1,60 @@
+#!/usr/bin/wok -f
+
+/** build-SVL-deck.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f build-SVL-deck.wok
+  *
+  */
+
+OFS = '\t'
+OFQ = Quote.All
+
+val SVL   = "SVL.txt"
+val COCA  = "COCA.txt"
+val media = "SVL.media"
+val rankList     = List("-v@rawstr", s"list=$SVL")
+val corpus       = List("-v@rawstr", s"corpus=$COCA")
+val mediaDir     = List("-v@rawstr", s"media=$media")
+val SRD          = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\SRD")
+val SRDMap       = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\SRD.map")
+val OALD7        = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\OALD7")
+val OALD7Map     = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\OALD7.map")
+val LDOCE5       = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\LDOCE5-INLINE")
+val LDOCE5Map    = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\LDOCE5.map")
+val KENE7J5      = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KENE7J5")
+val KENE7J5Map   = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KENE7J5.map")
+val KQNEWEJ6     = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KQNEWEJ6")
+val KQNEWEJ6Map  = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KQNEWEJ6.map")
+val SAITOWAEI    = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP")
+val SAITOWAEIMap = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP.map")
+
+val wok = List("java", "-jar", "wok-0.1.0.jar", "-f")
+
+def inputFileName(n: Int) = 
+  if (n == 0) SVL
+  else outputFileName(n)
+def outputFileName(n: Int) = 
+  f"SVL.temp.$n%02d.tsv"
+
+List(
+  wok ::: List("rank.wok",                  "-v", "src=0", "-v", "dst=1", "-v", "update=true", "-v", "grp=1000") ::: rankList,
+  wok ::: List("coca-html.wok",             "-v", "src=0", "-v", "dst=2", "-v", "update=true") ::: corpus,
+  wok ::: List("eb-voice-html.wok",         "-v", "src=0", "-v", "dst=3", "-v", "idx=1", "-v", "update=true")  ::: LDOCE5 ::: mediaDir,
+  wok ::: List("eb-voice-html.wok",         "-v", "src=0", "-v", "dst=3", "-v", "idx=1", "-v", "update=false") ::: OALD7  ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=4", "-v", "update=true") ::: SRD       ::: SRDMap       ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=5", "-v", "update=true") ::: KENE7J5   ::: KENE7J5Map   ::: mediaDir,
+  wok ::: List("eb-html-min-KQNEWEJ6.wok",  "-v", "src=0", "-v", "dst=6", "-v", "update=true") ::: KQNEWEJ6  :::  KQNEWEJ6Map ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=7", "-v", "update=true") ::: SAITOWAEI ::: SAITOWAEIMap ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=8", "-v", "update=true") ::: LDOCE5    ::: LDOCE5Map    ::: mediaDir,
+  wok ::: List("custom-markup.SRD.wok",                    "-v", "idx=4"),
+  wok ::: List("custom-markup.KENE7J5.wok",                "-v", "idx=5"),
+  wok ::: List("col-detach.wok", "-v@str", "src=0,1,2,3,4,5,6,7,8", "-v", "dst=1") ::: mediaDir
+).
+  zipWithIndex.
+  foreach { case (x, i) =>
+    val input = inputFileName(i).fileOption.get
+    val output = outputFileName(i+1).fileOption.get
+    println(f"$i%02d: $x")
+    x #< input #> output !
+  }
