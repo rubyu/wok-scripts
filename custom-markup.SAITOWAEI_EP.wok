@@ -5,7 +5,7 @@
   * This script modifies the search result for a word in NEW Saito Waei Daijiten (converted
   * to Epwing by dessed). The following changes will be applied to the data:
   *
-  * 1. Split pos and sense when those are connected.
+  * 1. Split pos and sense by `<br>` when those are connected.
   * 2. Add a class `pos` to lines start with "〈".
   * 2. Add a class `sense1` to lines start with "NUMBER. " (e.g, "1. ").
   * 4. Norimalize indicators, "◆" and "◇", inserted before example sentences, to "・".
