@@ -1,0 +1,43 @@
+#!/usr/bin/wok -f
+
+/** custom-markup.SAITOWAEI_EP.wok
+  * 
+  * This script modifies the search result for a word in NEW Saito Waei Daijiten (converted
+  * to Epwing by dessed). The following changes will be applied to the data:
+  *
+  * 1. Split pos and sense when those are connected.
+  * 2. Add a class `pos` to lines start with "〈".
+  * 2. Add a class `sense1` to lines start with "NUMBER. " (e.g, "1. ").
+  * 4. Norimalize indicators, "◆" and "◇", inserted before example sentences, to "・".
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f custom-markup.SAITOWAEI_EP.wok -v idx=0 input > output
+  *
+  * Option:
+  *   -v idx:  The index number of the target column.
+  *
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val p1 = """<br>(〈[^〉]+〉)([0-9]{1,2}\.)""".r
+val p2 = """<br>(〈((?!<br>).)*)""".r
+val p3 = """<br>( ?[0-9]{1,2}\.((?!<br>).)*)""".r
+val p4 = """<br>(◆|◇)""".r
+
+In { _ 
+  .filter (_.size > 0)
+  .map (_.padTo(idx+1, ""))
+  .map { row =>
+    var str = row(idx)
+    str = p1.replaceAllIn(str, """<br>$1<br>$2""")
+    str = p2.replaceAllIn(str, """<br><span class="pos">$1</span>""")
+    str = p3.replaceAllIn(str, """<br><span class="sense1">$1</span>""")
+    str = p4.replaceAllIn(str, """<br>・""")
+    row.updated(idx, str)
+  }
+  .foreach (row => println(row: _*))
+}
