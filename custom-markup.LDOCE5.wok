@@ -32,8 +32,8 @@
   *   Phrases from this entry
   *   Phrases from other entries
   *
-  *   These normally are not be contained in the search result. If you need it, you should set flags corresponding 
-  *   to it you need in "ldoce5-fpw.conf".
+  *   These normally are not be contained in the search result. If you need it, you should set flags, corresponding
+  *   to the supplements which you need, in `ldoce5-fpw.conf`, and build the dictionary.
   */
 
 FS = '\t'
