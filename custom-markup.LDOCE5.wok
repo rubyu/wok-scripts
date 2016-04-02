@@ -41,23 +41,6 @@ FQ = Quote.Min
 OFS = '\t'
 OFQ = Quote.All
 
-val supplements = Seq(
-  "Word family",
-  "Word origin",
-  "Verb form",
-  "Other dictionary examples",
-  "Examples from the corpus",
-  "Thesaurus",
-  "Longman Language Acivator",
-  "Collocations from this entry",
-  "Collocations from other entries",
-  "Collocations from the corpus",
-  "Word sets",
-  "Phrases from this entry",
-  "Phrases from other entries"
-)
-
-
 val p1 = """<br>(&lt;((?!<br>).)*)""".r
 val p2 = """<br>([0-9]{1,2} ((?!<br>).)*)""".r
 val p3 = """<br>( ?[a-z]{1,2}\) ((?!<br>).)*)""".r
