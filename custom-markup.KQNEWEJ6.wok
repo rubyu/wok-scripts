@@ -1,6 +1,6 @@
 #!/usr/bin/wok -f
 
-/** custom-markup.SAITOWAEI_EP.wok
+/** custom-markup.KQNEWEJ6.wok
   * 
   * This script modifies the search result for a word in Kenkyusha Shin EiWa Cyujiten (converted
   * to Epwing by dessed). The following changes will be applied to the data:
@@ -11,7 +11,7 @@
   * 4. Norimalize indicators, "◆" and "◇", inserted before example sentences, to "・".
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f custom-markup.SAITOWAEI_EP.wok -v idx=0 input > output
+  *   java -jar wok-0.1.0.jar -f custom-markup.KQNEWEJ6.wok -v idx=0 input > output
   *
   * Option:
   *   -v idx:  The index number of the target column.
