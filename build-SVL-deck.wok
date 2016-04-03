@@ -26,12 +26,12 @@ val KQNEWEJ6     = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KQNEWEJ6
 val SAITOWAEI    = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP")
 
 // EBwin map files
-val SRDMap       = List("-v@rawstr", raw"map=Z:\BTSync\rubyu\dictionary\SRD.map")
-val OALD7Map     = List("-v@rawstr", raw"map=Z:\BTSync\rubyu\dictionary\OALD7.map")
-val LDOCE5Map    = List("-v@rawstr", raw"map=Z:\BTSync\rubyu\dictionary\LDOCE5.map")
-val KENE7J5Map   = List("-v@rawstr", raw"map=Z:\BTSync\rubyu\dictionary\KENE7J5.map")
-val KQNEWEJ6Map  = List("-v@rawstr", raw"map=Z:\BTSync\rubyu\dictionary\KQNEWEJ6.map")
-val SAITOWAEIMap = List("-v@rawstr", raw"map=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP.map")
+val SRDMap       = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\SRD.map")
+val OALD7Map     = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\OALD7.map")
+val LDOCE5Map    = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\LDOCE5.map")
+val KENE7J5Map   = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\KENE7J5.map")
+val KQNEWEJ6Map  = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\KQNEWEJ6.map")
+val SAITOWAEIMap = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP.map")
 
 val wok = List("java", "-jar", "wok-0.1.0.jar", "-f")
 
