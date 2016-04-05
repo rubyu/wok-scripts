@@ -15,7 +15,6 @@ OFQ = Quote.All
 val SVL   = "SVL.txt"
 val COCA  = "COCA.txt"
 val media = "SVL.media"
-val temp  = "SVL.temp"
 val rankList     = List("-v@rawstr", s"list=$SVL")
 val corpus       = List("-v@rawstr", s"corpus=$COCA")
 val mediaDir     = List("-v@rawstr", s"media=$media")
@@ -39,52 +38,38 @@ val SAITOWAEIMap = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\SAITOW
 // Definition of the deck
 val wok = List("java", "-jar", "wok-0.1.0.jar", "-f")
 val definition = List(
-  wok ::: List("rank.wok",                  "-v", "src=0", "-v", "dst=1", "-v", "update=true", "-v", "grp=1000") ::: rankList,
-  wok ::: List("coca-html.wok",             "-v", "src=0", "-v", "dst=2", "-v", "update=true") ::: corpus,
-  wok ::: List("eb-voice-html.wok",         "-v", "src=0", "-v", "dst=3", "-v", "idx=1", "-v", "update=true")  ::: LDOCE5 ::: mediaDir,
-  wok ::: List("eb-voice-html.wok",         "-v", "src=0", "-v", "dst=3", "-v", "idx=1", "-v", "update=false") ::: OALD7  ::: mediaDir,
-  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=4", "-v", "update=true") ::: SRD       ::: SRDMap       ::: mediaDir,
-  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=5", "-v", "update=true") ::: KENE7J5   ::: KENE7J5Map   ::: mediaDir,
-  wok ::: List("eb-html-min-KQNEWEJ6.wok",  "-v", "src=0", "-v", "dst=6", "-v", "update=true") ::: KQNEWEJ6  ::: KQNEWEJ6Map  ::: mediaDir,
-  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=7", "-v", "update=true") ::: SAITOWAEI ::: SAITOWAEIMap ::: mediaDir,
-  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=8", "-v", "update=true") ::: LDOCE5    ::: LDOCE5Map    ::: mediaDir,
-  wok ::: List("custom-markup.SRD.wok",                    "-v", "idx=4"),
-  wok ::: List("custom-markup.KENE7J5.wok",                "-v", "idx=5"),
-  wok ::: List("custom-markup.KQNEWEJ6.wok",               "-v", "idx=6"),
-  wok ::: List("custom-markup.LDOCE5.wok",                 "-v", "idx=7"),
-  wok ::: List("custom-markup.SAITOWAEI_EP.wok",           "-v", "idx=8"),
-  wok ::: List("col-limit-by.wok",                         "-v@str", "length=100K"),
-  wok ::: List("col-detach.wok", "-v@str", "src=0,1,2,3,4,5,6,8,7", "-v", "dst=1") ::: mediaDir
+  wok ::: List("col-copy.wok",              "-v", "src=0", "-v", "dst=1"),
+  wok ::: List("rank.wok",                  "-v", "src=0", "-v", "dst=2", "-v", "update=true", "-v", "grp=1000") ::: rankList,
+  wok ::: List("coca-html.wok",             "-v", "src=0", "-v", "dst=3", "-v", "update=true") ::: corpus,
+  wok ::: List("eb-voice-html.wok",         "-v", "src=0", "-v", "dst=4", "-v", "idx=1", "-v", "update=true")  ::: LDOCE5 ::: mediaDir,
+  wok ::: List("eb-voice-html.wok",         "-v", "src=0", "-v", "dst=4", "-v", "idx=1", "-v", "update=false") ::: OALD7  ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=5", "-v", "update=true") ::: SRD       ::: SRDMap       ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=6", "-v", "update=true") ::: KENE7J5   ::: KENE7J5Map   ::: mediaDir,
+  wok ::: List("eb-html-min-KQNEWEJ6.wok",  "-v", "src=0", "-v", "dst=7", "-v", "update=true") ::: KQNEWEJ6  ::: KQNEWEJ6Map  ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=8", "-v", "update=true") ::: SAITOWAEI ::: SAITOWAEIMap ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=9", "-v", "update=true") ::: LDOCE5    ::: LDOCE5Map    ::: mediaDir,
+  wok ::: List("custom-markup.SRD.wok",                    "-v", "idx=5"),
+  wok ::: List("custom-markup.KENE7J5.wok",                "-v", "idx=6"),
+  wok ::: List("custom-markup.KQNEWEJ6.wok",               "-v", "idx=7"),
+  wok ::: List("custom-markup.LDOCE5.wok",                 "-v", "idx=8"),
+  wok ::: List("custom-markup.SAITOWAEI_EP.wok",           "-v", "idx=9"),
+  wok ::: List("col-limit-by.wok",                         "-v@str", "length=200K"),
+  wok ::: List("col-detach.wok", "-v@str", "src=1,2,3,4,5,6,7,9,8", "-v", "dst=1") ::: mediaDir
 )
 
-// Large input may cause OOM..., then it need to split a souce file into small pieces.
-val pieceEntryLimit = 100
+def inputFileName(n: Int) = 
+  if (n == 0) SVL
+  else outputFileName(n-1)
+def outputFileName(n: Int) = 
+  if (n == definition.size-1) "SVL.complete.tsv"
+  else f"SVL.temp.${ n+1 }%02d.tsv"
 
-// naive but memory efficient scan
-val sourceSize = In.from(SVL){ _.size }
-assert(sourceSize > 0)
-
-def piecePath(fieldId: Int, pieceId: Int) = f"$temp/$fieldId%02d.$pieceId%02d"
-val pieceSize = sourceSize / pieceEntryLimit + 1
-
-if (temp nonExistent) temp.createDirectory()
-
-// split source into small files
-In.from(SVL) { _
-  .foreach { row => 
-     f"$temp/00.${ NR / pieceEntryLimit }%02d" #<< { out =>
-       WRITER.writeRow(out, row: _*)
-     }
+definition
+  .zipWithIndex
+  .foreach { case (x, i) =>
+    val input = inputFileName(i)
+    val output = outputFileName(i).fileOption.get
+    val command = x ::: List(input)
+    println(f"$i%02d: $command #> $output !")
+    command #> output !
   }
-}
-
-for (
-  pieceId <- 0 until pieceSize;
-  fieldId <- 0 until definition.size
-) {
-  val input = List(piecePath(fieldId, pieceId))
-  val output = piecePath(fieldId+1, pieceId).fileOption.get
-  val command = definition(fieldId)
-  println(f"[$pieceId%02d][$fieldId%02d] $command #< $input #> $output !")
-  (command ::: input) #> output !
-}
