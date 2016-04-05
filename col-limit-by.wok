@@ -1,0 +1,32 @@
+#!/usr/bin/wok -f
+
+/** col-limit-by.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f col-limit-by.wok -v@str length=100K input > output
+  *
+  * Option:
+  *   -v@str length:  The limit size in the length of string to be given to all rows of the input. 
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val pk = """(\d+)K""".r
+val pm = """(\d+)M""".r
+val pg = """(\d+)G""".r
+
+val limit = length match {
+  case pk(n) => n.toInt * 1000
+  case pm(n) => n.toInt * 1000000
+  case pg(n) => n.toInt * 1000000000
+  case n => n.toInt
+}
+
+
+In { _
+  .map { row => row.slice(0, row.scanLeft(0)((z, n) => z + n.length).filter(_ < limit).size - 1) }
+  .foreach (row => println(row: _*))
+}
