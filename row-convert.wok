@@ -1,0 +1,38 @@
+#!/usr/bin/wok -f
+
+/** row-convert.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f row-convert.wok -v@rawstr expr=row.size input > output
+  *
+  * Option:
+  *   -v@rawstr expr:  The scala code to be applied to all of the rows. `row` represents the value of a row and the type 
+                       of which is `List[String]`. The type of the return value of this should be `List[Any]`.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+import scala.reflect.runtime.currentMirror
+import scala.tools.reflect.ToolBox
+
+def source = s"""
+new Function1[List[String], List[Any]] {
+  def apply(row: List[String]): List[Any] = {
+    ${expr}
+  }
+}
+"""
+
+val evaluator = {
+  val toolbox = currentMirror.mkToolBox()
+  val tree = toolbox.parse(source)
+  toolbox.eval(tree).asInstanceOf[Function1[List[String], List[Any]]]
+}
+
+In { _
+  .map (evaluator apply _)
+  .foreach (row => println(row: _*))
+}

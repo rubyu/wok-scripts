@@ -1,9 +1,9 @@
 #!/usr/bin/wok -f
 
-/** convert.wok
+/** cell-convert.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f convert.wok -v@rawstr expr=v.size input > output
+  *   java -jar wok-0.1.0.jar -f cell-convert.wok -v@rawstr expr=v.size input > output
   *
   * Option:
   *   -v@rawstr expr:  The scala code to be applied to all of the cells. `v` is the value of a cell and the type is `String`.
