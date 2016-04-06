@@ -12,14 +12,36 @@ OFQ = Quote.All
 OFS = '\t'
 OFQ = Quote.All
 
-val SVL   = "SVL.txt"
-val COCA  = "COCA.txt"
+/** The source file of the deck.
+ * SVL word set has several unsearchable words, and for handing the problem, this tsv file consists of the two fields,
+ * `word` and `fixed word`. Anki recognize the first field of the tsv as the key for the card, so once import it to 
+ * Anki, there is no way to change the key to the another. If you need to duplicate a field, you can do it simply 
+ * with `col-copy.wok`.
+ * 
+ * Fixed words are:
+ * `Mr.`      -> `Mr`
+ * `Mrs.`     -> `Mrs`
+ * `Messrs.`  -> `Messrs`
+ * `Ms.`      -> `Ms`
+ * `footlight -> `footlights`
+ */
+val SVL = "SVL.tsv"
+
+/** The COCA 60K corpus file.
+ * `wordlist_60k_***.txt` is almost a correct TSV file but the header of around twenty lines, so for using it for the 
+ *  corpus here, there is need to cut it to be a strict TSV file.
+ * This corpus abailable for download from http://www.wordfrequency.info/.
+ */
+val COCA = "COCA.tsv"
+
+/* The output directory of media files. */
 val media = "SVL.media"
+
 val rankList     = List("-v@rawstr", s"list=$SVL")
 val corpus       = List("-v@rawstr", s"corpus=$COCA")
 val mediaDir     = List("-v@rawstr", s"media=$media")
 
-// EPWING dictionaries
+/* EPWING dictionaries. */
 val SRD          = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\SRD")
 val OALD7        = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\OALD7")
 val LDOCE5       = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\LDOCE5-INLINE")
@@ -27,7 +49,7 @@ val KENE7J5      = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KENE7J5"
 val KQNEWEJ6     = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KQNEWEJ6")
 val SAITOWAEI    = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP")
 
-// EBwin map files
+/* EBWin map files. */
 val SRDMap       = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\SRD.map")
 val OALD7Map     = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\OALD7.map")
 val LDOCE5Map    = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\LDOCE5.map")
@@ -35,26 +57,28 @@ val KENE7J5Map   = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\KENE7J
 val KQNEWEJ6Map  = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\KQNEWEJ6.map")
 val SAITOWAEIMap = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP.map")
 
-// Definition of the deck
+/* The common header of the commands using Wok. */
 val wok = List("java", "-jar", "wok-0.1.0.jar", "-f")
+
+/* Definition of the deck. */
 val definition = List(
-  wok ::: List("col-copy.wok",              "-v", "src=0", "-v", "dst=1"),
-  wok ::: List("rank.wok",                  "-v", "src=0", "-v", "dst=2", "-v", "update=true", "-v", "grp=1000") ::: rankList,
-  wok ::: List("coca-html.wok",             "-v", "src=0", "-v", "dst=3", "-v", "update=true") ::: corpus,
-  wok ::: List("eb-voice-html.wok",         "-v", "src=0", "-v", "dst=4", "-v", "idx=1", "-v", "update=true")  ::: LDOCE5 ::: mediaDir,
-  wok ::: List("eb-voice-html.wok",         "-v", "src=0", "-v", "dst=4", "-v", "idx=1", "-v", "update=false") ::: OALD7  ::: mediaDir,
-  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=5", "-v", "update=true") ::: SRD       ::: SRDMap       ::: mediaDir,
-  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=6", "-v", "update=true") ::: KENE7J5   ::: KENE7J5Map   ::: mediaDir,
-  wok ::: List("eb-html-min-KQNEWEJ6.wok",  "-v", "src=0", "-v", "dst=7", "-v", "update=true") ::: KQNEWEJ6  ::: KQNEWEJ6Map  ::: mediaDir,
-  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=8", "-v", "update=true") ::: SAITOWAEI ::: SAITOWAEIMap ::: mediaDir,
-  wok ::: List("eb-html-min.wok",           "-v", "src=0", "-v", "dst=9", "-v", "update=true") ::: LDOCE5    ::: LDOCE5Map    ::: mediaDir,
+  //wok ::: List("col-copy.wok",              "-v", "src=0", "-v", "dst=1"),
+  wok ::: List("rank.wok",                  "-v", "src=1", "-v", "dst=2", "-v", "update=true", "-v", "grp=1000") ::: rankList,
+  wok ::: List("coca-html.wok",             "-v", "src=1", "-v", "dst=3", "-v", "update=true") ::: corpus,
+  wok ::: List("eb-voice-html.wok",         "-v", "src=1", "-v", "dst=4", "-v", "idx=1", "-v", "update=true")  ::: LDOCE5 ::: mediaDir,
+  wok ::: List("eb-voice-html.wok",         "-v", "src=1", "-v", "dst=4", "-v", "idx=1", "-v", "update=false") ::: OALD7  ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=5", "-v", "update=true") ::: SRD       ::: SRDMap       ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=6", "-v", "update=true") ::: KENE7J5   ::: KENE7J5Map   ::: mediaDir,
+  wok ::: List("eb-html-min-KQNEWEJ6.wok",  "-v", "src=1", "-v", "dst=7", "-v", "update=true") ::: KQNEWEJ6  ::: KQNEWEJ6Map  ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=8", "-v", "update=true") ::: SAITOWAEI ::: SAITOWAEIMap ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=9", "-v", "update=true") ::: LDOCE5    ::: LDOCE5Map    ::: mediaDir,
   wok ::: List("custom-markup.SRD.wok",                    "-v", "idx=5"),
   wok ::: List("custom-markup.KENE7J5.wok",                "-v", "idx=6"),
   wok ::: List("custom-markup.KQNEWEJ6.wok",               "-v", "idx=7"),
-  wok ::: List("custom-markup.LDOCE5.wok",                 "-v", "idx=8"),
-  wok ::: List("custom-markup.SAITOWAEI_EP.wok",           "-v", "idx=9"),
+  wok ::: List("custom-markup.SAITOWAEI_EP.wok",           "-v", "idx=8"),
+  wok ::: List("custom-markup.LDOCE5.wok",                 "-v", "idx=9"),
   wok ::: List("col-limit-by.wok",                         "-v@str", "length=200K"),
-  wok ::: List("col-detach.wok", "-v@str", "src=1,2,3,4,5,6,7,9,8", "-v", "dst=1") ::: mediaDir
+  wok ::: List("col-detach.wok", "-v@str", "src=1,2,3,4,5,6,7,8,9", "-v", "dst=1") ::: mediaDir
 )
 
 def inputFileName(n: Int) = 
