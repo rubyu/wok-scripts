@@ -96,28 +96,28 @@ val definition = List(
   wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=6", "-v", "update=true") ::: READERS   ::: READERSMap   ::: mediaDir,
 
 /* Content 4 */
-  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=8", "-v", "update=true") ::: EIJIRO    ::: EIJIROMap    ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=7", "-v", "update=true") ::: EIJIRO    ::: EIJIROMap    ::: mediaDir,
 
 /* Content 5 */
-  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=9", "-v", "update=true") ::: LDOCE5    ::: LDOCE5Map    ::: mediaDir,
-  wok ::: List("custom-markup.LDOCE5.wok",                  "-v", "idx=9"),
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=8", "-v", "update=true") ::: LDOCE5    ::: LDOCE5Map    ::: mediaDir,
+  wok ::: List("custom-markup.LDOCE5.wok",                  "-v", "idx=8"),
 
 /* Content 6 */
-  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=10", "-v", "update=true") ::: OALD7     ::: OALD7Map     ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=9", "-v", "update=true") ::: OALD7     ::: OALD7Map     ::: mediaDir,
 
 /* Content 7 */
-  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=11", "-v", "update=true") ::: SAITOWAEI ::: SAITOWAEIMap ::: mediaDir,
-  wok ::: List("custom-markup.SAITOWAEI_EP.wok",           "-v", "idx=11"),
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=10", "-v", "update=true") ::: SAITOWAEI ::: SAITOWAEIMap ::: mediaDir,
+  wok ::: List("custom-markup.SAITOWAEI_EP.wok",           "-v", "idx=10"),
 
 /* Content 8 */
-  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=12", "-v", "update=true") ::: LDOCE5IN  ::: LDOCE5Map    ::: mediaDir,
-  wok ::: List("custom-markup.LDOCE5.wok",                 "-v", "idx=12"),
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=11", "-v", "update=true") ::: LDOCE5IN  ::: LDOCE5Map    ::: mediaDir,
+  wok ::: List("custom-markup.LDOCE5.wok",                 "-v", "idx=11"),
 
 /* Limit the size of a row. */
   wok ::: List("col-limit-by.wok", "-v@str", "length=200K"),
 
 /* Detach the content of a row and save it as a HTML file.  */
-  wok ::: List("col-detach.wok", "-v@str", "src=1,2,3,4,5,6,7,8,9,10,11,12", "-v", "dst=1") ::: mediaDir
+  wok ::: List("col-detach.wok", "-v@str", "src=1,2,3,4,5,6,7,8,9,10,11", "-v", "dst=1") ::: mediaDir
 )
 
 def inputFileName(n: Int) = 
