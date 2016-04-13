@@ -15,7 +15,7 @@ FQ = Quote.Min
 OFS = '\t'
 OFQ = Quote.All
 
-val p1 = """<span class="ebin"><span class="ebkw"></span>(((?!<br>).)*)""".r
+val p1 = """<span class="ebkw"></span>(((?!<br>).)*)""".r
 val p2 = """(━((?!<br>).)*)""".r
 val p3 = """<br><span class="ebbo">([0-9]{1,2})a</span>""".r
 val p4 = """<br>(<span class="ebbo">[0-9]{1,2}</span>((?!<br>).)*)""".r
@@ -26,7 +26,7 @@ In { _
   .map (_.padTo(idx+1, ""))
   .map { row =>
     var str = row(idx)
-    str = p1.replaceAllIn(str, """<span class="ebin"><span class="ebkw">$1</span>""")
+    str = p1.replaceAllIn(str, """<span class="ebkw">$1</span>""")
     str = p2.replaceAllIn(str, """<span class="pos">$1</span>""")
     str = p3.replaceAllIn(str, """<br><span class="ebbo">$1</span><br><span class="ebbo">a</span>""")
     str = p4.replaceAllIn(str, """<br><span class="sense1">$1</span>""")

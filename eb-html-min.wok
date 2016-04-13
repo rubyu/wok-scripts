@@ -33,7 +33,7 @@ if (media nonExistent)
   media.createDirectory()
 
 def query(s: String) = {
-  val html = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "en,tx,sb,sp,in,em,dc,kw,ls,ec", "--ebmap", ebmap, s).!>.string
+  val html = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "en,tx,sb,sp,em,dc,kw,ls,ec", "--ebmap", ebmap, s).!>.string
   tag.replaceAllIn(html, { m =>
     val (alt, data) = (m.group(1), m.group(2))
     val bytes = b64 decodeBuffer data

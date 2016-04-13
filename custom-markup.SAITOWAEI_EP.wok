@@ -23,20 +23,20 @@ FQ = Quote.Min
 OFS = '\t'
 OFQ = Quote.All
 
-val p1 = """<br>(<span class="ebin">)?(〈[^〉]+〉)(<span class="ebbo">[0-9]{1,2}</span>\.)""".r
-val p2 = """<br>(<span class="ebin">)?(〈((?!<br>).)*)""".r
+val p1 = """<br>(〈[^〉]+〉)(<span class="ebbo">[0-9]{1,2}</span>\.)""".r
+val p2 = """<br>(〈((?!<br>).)*)""".r
 val p3 = """<br>( ?<span class="ebbo">[0-9]{1,2}</span>\.((?!<br>).)*)""".r
-val p4 = """<br>(<span class="ebin">)?(◆|◇)""".r
+val p4 = """<br>(◆|◇)""".r
 
 In { _ 
   .filter (_.size > 0)
   .map (_.padTo(idx+1, ""))
   .map { row =>
     var str = row(idx)
-    str = p1.replaceAllIn(str, """<br>$1$2<br>$3""")
-    str = p2.replaceAllIn(str, """<br>$1<span class="pos">$2</span>""")
+    str = p1.replaceAllIn(str, """<br>$1<br>$2""")
+    str = p2.replaceAllIn(str, """<br><span class="pos">$1</span>""")
     str = p3.replaceAllIn(str, """<br><span class="sense1">$1</span>""")
-    str = p4.replaceAllIn(str, """<br>$1・""")
+    str = p4.replaceAllIn(str, """<br>・""")
     row.updated(idx, str)
   }
   .foreach (row => println(row: _*))
