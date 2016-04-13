@@ -1,0 +1,29 @@
+#!/usr/bin/wok -f
+
+/** custom-markup.OALD7.wok
+  * 
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f custom-markup.OALD7.wok -v idx=0 input > output
+  *
+  * Option:
+  *   -v idx:  The index number of the target column.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val p1 = """<br>(<span class="ebin">)?(<span class="ebbo">[0-9]{1,2}</span>((?!<br>).)*)""".r
+
+In { _ 
+  .filter (_.size > 0)
+  .map (_.padTo(idx+1, ""))
+  .map { row =>
+    var str = row(idx)
+    str = p1.replaceAllIn(str, """<br>$1<span class="sense1">$2</span>""")
+    row.updated(idx, str)
+  }
+  .foreach (row => println(row: _*))
+}

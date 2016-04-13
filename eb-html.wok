@@ -23,7 +23,7 @@ val eb = "ebquery-0.3.1.jar"
 if (eb nonExistent) 
   eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
 
-def query(s: String) = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "en,kw,tx,sb,sp,ec,ls", "--ebmap", ebmap, s).!>.string
+def query(s: String) = Seq("java", "-Dfile.encoding=UTF-8", "-jar", eb, "-d", dic, "-f", "html", "-m", "en,tx,sb,sp,in,nb,em,dc,kw,ls,ec", "--ebmap", ebmap, s).!>.string
 
 In { _ 
   .filter (_ isDefinedAt src)

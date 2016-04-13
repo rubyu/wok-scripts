@@ -23,8 +23,8 @@ FQ = Quote.Min
 OFS = '\t'
 OFQ = Quote.All
 
-val p1 = """<span class="ebin">(<span class="ebkw"></span><span class="ebul">((?!<br>).)*)""".r
-val p2 = """(<img alt="zB125"((?!<br>).)*)""".r
+val p1 = """<span class="ebin"><span class="ebkw"></span>(<span class="ebul">((?!<br>).)*)""".r
+val p2 = """(━((?!<br>).)*)""".r
 val p3 = """<br><span class="ebkw"></span><span class="ebul">([0-9]{1,2})a</span>""".r
 val p4 = """<br><span class="ebkw"></span>(<span class="ebul">[0-9]{1,2}</span>((?!<br>).)*)""".r
 val p5 = """<br><span class="ebkw"></span>(<span class="ebul">[a-z]</span>((?!<br>).)*)""".r

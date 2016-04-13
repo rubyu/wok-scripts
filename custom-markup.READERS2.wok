@@ -1,0 +1,37 @@
+#!/usr/bin/wok -f
+
+/** custom-markup.READERS2.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f custom-markup.READERS2.wok -v idx=0 input > output
+  *
+  * Option:
+  *   -v idx:  The index number of the target column.
+  *
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val p1 = """<span class="ebin"><span class="ebkw"></span>(((?!<br>).)*)""".r
+val p2 = """(━((?!<br>).)*)""".r
+val p3 = """<br><span class="ebbo">([0-9]{1,2})a</span>""".r
+val p4 = """<br>(<span class="ebbo">[0-9]{1,2}</span>((?!<br>).)*)""".r
+val p5 = """<br>(<span class="ebbo">[a-z]</span>((?!<br>).)*)""".r
+
+In { _ 
+  .filter (_.size > 0)
+  .map (_.padTo(idx+1, ""))
+  .map { row =>
+    var str = row(idx)
+    str = p1.replaceAllIn(str, """<span class="ebin"><span class="ebkw">$1</span>""")
+    str = p2.replaceAllIn(str, """<span class="pos">$1</span>""")
+    str = p3.replaceAllIn(str, """<br><span class="ebbo">$1</span><br><span class="ebbo">a</span>""")
+    str = p4.replaceAllIn(str, """<br><span class="sense1">$1</span>""")
+    str = p5.replaceAllIn(str, """<br><span class="sense2">$1</span>""")
+    row.updated(idx, str)
+  }
+  .foreach (row => println(row: _*))
+}

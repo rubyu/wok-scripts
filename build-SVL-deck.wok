@@ -51,7 +51,7 @@ val KENE7J5      = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KENE7J5"
 val GENIUS       = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\GENIUS")
 val GENIUD       = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\GENIUD")
 val KQNEWEJ6     = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KQNEWEJ6")
-val READERS      = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\READERS")
+val READERS2     = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\READERS2")
 val SAITOWAEI    = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP")
 val EIJIRO       = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\英辞郎")
 
@@ -63,7 +63,7 @@ val GENIUSMap    = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\GENIUS
 val GENIUDMap    = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\GENIUD.map")
 val KENE7J5Map   = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\KENE7J5.map")
 val KQNEWEJ6Map  = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\KQNEWEJ6.map")
-val READERSMap   = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\READERS2.map")
+val READERS2Map  = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\READERS2.map")
 val SAITOWAEIMap = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP.map")
 val EIJIROMap    = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\EMPTY.map")
 
@@ -93,10 +93,12 @@ val definition = List(
   wok ::: List("custom-markup.KQNEWEJ6.wok",               "-v",  "idx=5"),
 
 /* Content 3 */
-  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=6", "-v", "update=true") ::: READERS   ::: READERSMap   ::: mediaDir,
+  wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=6", "-v", "update=true") ::: READERS2  ::: READERS2Map  ::: mediaDir,
+  wok ::: List("custom-markup.READERS2.wok",               "-v",  "idx=6"),
 
 /* Content 4 */
   wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=7", "-v", "update=true") ::: EIJIRO    ::: EIJIROMap    ::: mediaDir,
+  wok ::: List("custom-markup.EIJIRO.wok",                 "-v",  "idx=7"),
 
 /* Content 5 */
   wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=8", "-v", "update=true") ::: LDOCE5    ::: LDOCE5Map    ::: mediaDir,
@@ -104,6 +106,7 @@ val definition = List(
 
 /* Content 6 */
   wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=9", "-v", "update=true") ::: OALD7     ::: OALD7Map     ::: mediaDir,
+  wok ::: List("custom-markup.OALD7.wok",                  "-v",  "idx=9"),
 
 /* Content 7 */
   wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v", "dst=10", "-v", "update=true") ::: SAITOWAEI ::: SAITOWAEIMap ::: mediaDir,
@@ -114,7 +117,7 @@ val definition = List(
   wok ::: List("custom-markup.LDOCE5.wok",                 "-v", "idx=11"),
 
 /* Limit the size of a row. */
-  wok ::: List("col-limit-by.wok", "-v@str", "length=200K"),
+  wok ::: List("col-limit-by.wok", "-v@str", "length=300K"),
 
 /* Detach the content of a row and save it as a HTML file.  */
   wok ::: List("col-detach.wok", "-v@str", "src=1,2,3,4,5,6,7,8,9,10,11", "-v", "dst=1") ::: mediaDir
