@@ -15,7 +15,7 @@ FQ = Quote.Min
 OFS = '\t'
 OFQ = Quote.All
 
-val p1 = """<br>—(<span class="ebit">((?!<br>).)*)""".r
+val p1 = """<br>—?(<span class="ebit">((?!<br>).)*)""".r
 val p2 = """<br>(<span class="ebbo">((?!<br>).)*)""".r
 
 In { _ 

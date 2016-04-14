@@ -53,7 +53,7 @@ val GENIUD       = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\GENIUD")
 val KQNEWEJ6     = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\KQNEWEJ6")
 val READERS2     = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\READERS2")
 val SAITOWAEI    = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP")
-val EIJIRO       = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\英辞郎")
+val EIJIRO       = List("-v@rawstr", raw"dic=Z:\BTSync\rubyu\dictionary\EIJIRO")
 
 /* EBWin map files. */
 val SRDMap       = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\SRD.map")
@@ -65,7 +65,7 @@ val KENE7J5Map   = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\KENE7J
 val KQNEWEJ6Map  = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\KQNEWEJ6.map")
 val READERS2Map  = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\READERS2.map")
 val SAITOWAEIMap = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\SAITOWAEI_EP.map")
-val EIJIROMap    = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\EMPTY.map")
+val EIJIROMap    = List("-v@rawstr", raw"ebmap=Z:\BTSync\rubyu\dictionary\EIJIRO.map")
 
 /* The common header of the commands using Wok. */
 val wok = List("java", "-jar", "wok-0.1.0.jar", "-f")
