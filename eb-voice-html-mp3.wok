@@ -65,7 +65,7 @@ def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "
     convert(bytes, wav.path, mp3.path)
     wav.delete()
     mp3.size match {
-      case Some(n) if n > 0 => s"""<audio src="${mp3.name}" controls="controls"></audio>"""
+      case Some(n) if n > 0 => s"""<audio src="${mp3.name}" controls="controls">"""
       case _ => ""
     }
   }
