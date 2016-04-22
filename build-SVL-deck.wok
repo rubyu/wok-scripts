@@ -79,10 +79,10 @@ val definition = List(
   wok ::: List("coca-html.wok",             "-v", "src=1", "-v",  "dst=2", "-v", "update=true") ::: corpus,
 
 /* Audio */
-  wok ::: List("eb-voice-html.wok",         "-v", "src=1", "-v",  "dst=3", "-v", "idx=1", "-v", "update=true")  ::: LDOCE5   ::: mediaDir,
-  wok ::: List("eb-voice-html.wok",         "-v", "src=1", "-v",  "dst=3", "-v", "idx=1", "-v", "update=false") ::: OALD7    ::: mediaDir,
-  wok ::: List("eb-voice-html.wok",         "-v", "src=1", "-v",  "dst=3", "-v", "idx=0", "-v", "update=false") ::: KENE7J5  ::: mediaDir,
-  wok ::: List("eb-voice-html.wok",         "-v", "src=1", "-v",  "dst=3", "-v", "idx=0", "-v", "update=false") ::: GENIUS   ::: mediaDir,
+  wok ::: List("eb-voice-html-mp3.wok",     "-v", "src=1", "-v",  "dst=3", "-v", "idx=1", "-v", "update=true")  ::: LDOCE5   ::: mediaDir,
+  wok ::: List("eb-voice-html-mp3.wok",     "-v", "src=1", "-v",  "dst=3", "-v", "idx=1", "-v", "update=false") ::: OALD7    ::: mediaDir,
+  wok ::: List("eb-voice-html-mp3.wok",     "-v", "src=1", "-v",  "dst=3", "-v", "idx=0", "-v", "update=false") ::: KENE7J5  ::: mediaDir,
+  wok ::: List("eb-voice-html-mp3.wok",     "-v", "src=1", "-v",  "dst=3", "-v", "idx=0", "-v", "update=false") ::: GENIUS   ::: mediaDir,
 
 /* Content 1 */
   wok ::: List("eb-html-min.wok",           "-v", "src=1", "-v",  "dst=4", "-v", "update=true") ::: SRD       ::: SRDMap       ::: mediaDir,

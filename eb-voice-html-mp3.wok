@@ -1,0 +1,79 @@
+#!/usr/bin/wok -f
+
+/** eb-voice-html-mp3.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f eb-voice-html-mp3.wok -v src=0 -v dst=1 -v idx=0 -v update=true -v@rawstr dic=path_to_epwing_dir -v@rawstr media=path_to_media_dir input > output
+  *
+  * Option:
+  *   -v src:           The index number of the source column.
+  *   -v dst:           The index number of the destination column.
+  *   -v idx:           The index number of the target voice of the query result.
+  *   -v@rawstr dic:    Path to a directory containing Epwing's CATALOGS file.
+  *   -v@rawstr media:  Path to a directory to be used as the output destination of voice files.
+  *   -v update:        Whether or not update all cells of the column specified by `dst`.
+  *
+  * Note: This script has a dependency for a funcion to decode BASE64, only exists in Sun's Java Runtime Environment.
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val ffmpeg  = "ffmpeg.exe"
+val ebquery = "ebquery-0.3.1.jar"
+
+val tag = """<audio class="ebsd" controls="controls" src="data:audio/x-wav;base64,([^"]+)">""".r
+
+val b64 = new sun.misc.BASE64Decoder()
+val md = java.security.MessageDigest.getInstance("md5")
+
+if (ffmpeg nonExistent)
+  throw new RuntimeException("ffmpeg is needed")
+
+if (eb nonExistent)
+  eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
+
+if (media nonExistent)
+  media.createDirectory()
+
+def hexString(b: Byte) = "%02X" format b
+def hashString(buf: Array[Byte]) = buf map(hexString) mkString
+
+def isEnoughForFormat(buf: Array[Byte]) = buf.size >= 21
+def format(buf: Array[Byte])            = buf(20) + (buf(21) << 8)
+def isPCM(buf: Array[Byte])             = format(buf) == 0x1
+def isMP3(buf: Array[Byte])             = format(buf) == 0x55
+
+def convert(buf: Array[Byte], in: String, out: String): Unit = (isEnoughForFormat(buf), isPCM(buf), isMP3(buf)) match {
+  case (true, true,    _) => Seq(ffmpeg, "-i", in, "-y", "-loglevel", "quiet",                    out) !
+  case (true,    _, true) => Seq(ffmpeg, "-i", in, "-y", "-loglevel", "quiet", "-acodec", "copy", out) !
+  case _ => 
+}
+
+def query(s: String) = tag.findAllMatchIn(Seq("java", "-Dfile.encoding=UTF-8", "-jar", ebquery, "-d", dic, "-f", "html", "-m", "sd", s).!>.string)
+  .zipWithIndex .filter(_._2 == idx)
+  .map { case (tag(data), i) =>
+    val bytes = b64 decodeBuffer data
+    md.reset()
+    md update bytes
+    val hash = hashString(md.digest())
+    val wav = media / s"$hash.wav"
+    val mp3 = media / s"$hash.mp3"
+    wav write bytes
+    convert(bytes, wav.path, mp3.path)
+    wav.delete()
+    mp3.size match {
+      case Some(n) if n > 0 => s"""<audio src="${mp3.name}" controls="controls"></audio>"""
+      case _ => ""
+    }
+  }
+  .toList.headOption getOrElse ""
+
+In { _ 
+  .filter (_ isDefinedAt src)
+  .map (_.padTo(dst+1, ""))
+  .map (row => if (update || row(dst).isEmpty) row.updated(dst, query(row(src))) else row)
+  .foreach (row => println(row: _*))
+}
