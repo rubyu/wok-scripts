@@ -32,8 +32,8 @@ val md = java.security.MessageDigest.getInstance("md5")
 if (ffmpeg nonExistent)
   throw new RuntimeException("ffmpeg is needed")
 
-if (eb nonExistent)
-  eb write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
+if (ebquery nonExistent)
+  ebquery write Resource.fromURL("https://bitbucket.org/rubyu/ebquery/downloads/ebquery-0.3.1.jar").bytes
 
 if (media nonExistent)
   media.createDirectory()
