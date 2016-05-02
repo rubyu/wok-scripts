@@ -3,7 +3,7 @@
 /** eb-html-min.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f eb-html-min.wok -v src=0 -v dst=1 -v update=true -v@rawstr dic=path_to_epwing_dir -v@rawstr ebmap=path_to_ebmap_file -v@rawstr dir=path_to_media_dir input > output
+  *   java -jar wok-0.1.0.jar -f eb-html-min.wok -v src=0 -v dst=1 -v update=true -v@rawstr dic=path_to_epwing_dir -v@rawstr ebmap=path_to_ebmap_file -v@rawstr media=path_to_media_dir input > output
   * 
   * Option:
   *   -v src:           The index number of the source column.
