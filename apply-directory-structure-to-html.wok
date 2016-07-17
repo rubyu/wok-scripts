@@ -3,12 +3,16 @@
 /** apply-directory-structure-to-html.wok
   * 
   * Usage:
-  *   java -jar wok-0.1.0.jar -f apply-directory-structure-to-html.wok -v depth=1 -v@rawstr prefix=prefix_directory_name -v@rawstr target=target_dir
+  *   java -jar wok-0.1.0.jar -f apply-directory-structure-to-html.wok -v depth=1 -v@rawstr target=target_dir
   *
   */
 
-val p1 = """[0-9a-zA-Z]+\.(mp3|png)""".r
+val p1 = """<head>""".r
+val p2 = """[0-9a-zA-Z]+\.(mp3|png)""".r
 
 target.children().filter(_.isFile).filter(_.extension == Some("html")).foreach { child =>
-    child.write(p1.replaceAllIn(child.string, m => List(prefix, m.matched.take(depth).mkString("/"), m.matched).mkString("/")))
+    var str = child.string
+    str = p1.replaceFirstIn(str, "<head>\n<base href=\"" + ("../" * depth) + "\">")
+    str = p2.replaceAllIn(str, m => List(m.matched.take(depth).mkString("/"), m.matched).mkString("/"))
+    child.write(str)
 }
