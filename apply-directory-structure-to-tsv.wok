@@ -1,0 +1,25 @@
+#!/usr/bin/wok -f
+
+/** apply-directory-structure-to-tsv.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f apply-directory-structure-to-tsv.wok -v idx=1 -v depth=1 -v@rawstr prefix=prefix_directory_name input > output
+  *
+  */
+
+FS = '\t'
+FQ = Quote.Min
+OFS = '\t'
+OFQ = Quote.All
+
+val p1 = """[0-9a-zA-Z]+\.html""".r
+
+In { _
+  .map (_.padTo(idx+1, ""))
+  .map { row =>
+    var str = row(idx)
+    str = p1.replaceAllIn(str, m => List(prefix, m.matched.take(depth).mkString("/"), m.matched).mkString("/"))
+    row.updated(idx, str)
+  }
+  .foreach (row => println(row: _*))
+}

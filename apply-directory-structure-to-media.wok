@@ -1,0 +1,16 @@
+#!/usr/bin/wok -f
+
+/** apply-directory-structure-to-media.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f apply-directory-structure-to-media.wok -v depth=1 -v@rawstr target=target_dir
+  *
+  */
+
+target.children().filter(_.isFile).foreach { child =>
+    val dir = target + "/" + child.name.take(depth).mkString("/")
+    if (dir nonExistent) {
+        dir.createDirectory(createParents=true)
+    }
+    child.moveTo(dir / child.name)
+}
