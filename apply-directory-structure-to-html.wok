@@ -1,0 +1,14 @@
+#!/usr/bin/wok -f
+
+/** apply-directory-structure-to-html.wok
+  * 
+  * Usage:
+  *   java -jar wok-0.1.0.jar -f apply-directory-structure-to-html.wok -v depth=1 -v@rawstr prefix=prefix_directory_name -v@rawstr target=target_dir
+  *
+  */
+
+val p1 = """[0-9a-zA-Z]+\.(mp3|png)""".r
+
+target.children().filter(_.isFile).filter(_.extension == Some("html")).foreach { child =>
+    child.write(p1.replaceAllIn(child.string, m => List(prefix, m.matched.take(depth).mkString("/"), m.matched).mkString("/")))
+}
