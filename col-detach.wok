@@ -46,7 +46,7 @@ val html_tail =
 In { _ 
   .map { row =>
     // asasure that row have just the size
-    val padding = math.max(dst, srcs.max) + srcs.count(_ <= dst) + 1
+    val padding = math.max(dst, srcs.max) + srcs.count(_ <= dst)
     row.padTo(padding, "")
   }
   .map { row =>
@@ -62,7 +62,7 @@ In { _
       file write bytes
     val buffer = row.toBuffer
     srcs.sorted.reverse foreach (buffer remove _)
-    buffer(dst) = s"""<iframe src="${file.name}"></iframe>"""
+    buffer.insert(dst, s"""<iframe src="${file.name}"></iframe>""")
     buffer.toList
   }
   .foreach (row => println(row: _*))
